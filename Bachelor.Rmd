@@ -1,0 +1,23 @@
+---
+title: "Bachelor"
+author: "Alberte Baggesgaard Seeberg"
+date: "20/10/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+
+```
+
+
+
+```{r}
+
+```
+
+
+```{r}
+
+```

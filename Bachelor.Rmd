@@ -7,7 +7,36 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+setwd("~/Desktop/5. Semester/Bachelor/Data/Bachelor")
 
+library(stringr)
+
+OM_normal_001=read.csv("001_OM_normal.csv", header=TRUE, sep=";")
+
+OM_normal_001=OM_normal_001[-1,]
+OM_normal_001=OM_normal_001[-97,]
+
+OM_normal_001$ID="001"
+OM_normal_001$NAME="Viggo"
+OM_normal_001$RawPercentScore="59.4%"
+OM_normal_001$Chancecorrected="39.1%"
+
+OM_normal_001=OM_normal_001[-97,]
+OM_normal_001=OM_normal_001[-97,]
+OM_normal_001=OM_normal_001[-97,]
+
+
+
+
+OM_normal_001$Correct=as.integer(OM_normal_001$Correct)
+
+
+
+OM_normal_001$Correct=gsub("[4]", "0", OM_normal_001$Correct)
+OM_normal_001$Correct=gsub("[3]", "0", OM_normal_001$Correct)
+OM_normal_001$Correct=gsub("[2]", "0", OM_normal_001$Correct)
+
+OM_normal_001$No. = OM_normal_001$No
 
 ```
 

@@ -12,19 +12,33 @@ setwd("~/Desktop/5. Semester/Bachelor/Data/Bachelor")
 library(stringr)
 library(plyr)
 
+filelistno=list.files(path="~/Desktop/5. Semester/Bachelor/Data/Bachelor/NO", pattern="*.csv", full.names=TRUE)
+NO=NULL
+
+for (f in filelistno) {
+  t = read_csv2(f)
+  
+  f$Correct=as.factor(f$Correct)
+  f$Correct=as.integer(f$Correct)
+  f$Correct=gsub("[4]", "0", f$Correct)
+  f$Correct=gsub("[3]", "0", f$Correct)
+  f$Correct=gsub("[2]", "0", f$Correct)
+  
+  f=rename(f, c("No."="No"))
+  
+  f$No=gsub('[0.]', ' ', f$No)
+  
+  
+  if (exists("NO")){NO=rbind(NO,t)} else { NO=t }
+
+
+}
+
+
 OM_normal_001=read.csv("001_OM_normal.csv", header=TRUE, sep=";")
 
-OM_normal_001=OM_normal_001[-1,]
-OM_normal_001=OM_normal_001[-97,]
 
-OM_normal_001$ID="001"
-OM_normal_001$NAME="Viggo"
-OM_normal_001$RawPercentScore="59.4%"
-OM_normal_001$Chancecorrected="39.1%"
 
-OM_normal_001=OM_normal_001[-97,]
-OM_normal_001=OM_normal_001[-97,]
-OM_normal_001=OM_normal_001[-97,]
 
 
 

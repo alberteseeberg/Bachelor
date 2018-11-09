@@ -10,6 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 setwd("~/Desktop/5. Semester/Bachelor/Data/Bachelor")
 
 library(stringr)
+library(plyr)
 
 OM_normal_001=read.csv("001_OM_normal.csv", header=TRUE, sep=";")
 
@@ -27,7 +28,6 @@ OM_normal_001=OM_normal_001[-97,]
 
 
 
-
 OM_normal_001$Correct=as.integer(OM_normal_001$Correct)
 
 
@@ -36,7 +36,11 @@ OM_normal_001$Correct=gsub("[4]", "0", OM_normal_001$Correct)
 OM_normal_001$Correct=gsub("[3]", "0", OM_normal_001$Correct)
 OM_normal_001$Correct=gsub("[2]", "0", OM_normal_001$Correct)
 
-OM_normal_001$No. = OM_normal_001$No
+OM_normal_001=rename(OM_normal_001, c("No."="No"))
+
+OM_normal_001$No=gsub('[0.]', ' ', OM_normal_001$No)
+
+
 
 ```
 

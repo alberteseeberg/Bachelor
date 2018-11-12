@@ -31,7 +31,6 @@ library(ggplot2)
 NO <- do.call("rbind", lapply( list.files("~/Desktop/5. Semester/Bachelor/Data/Bachelor/NO",full=TRUE),
 		read.csv2, header=TRUE))
 
-
 NO$Correct=as.integer(NO$Correct)
 NO$Correct=gsub("[4]", "0", NO$Correct)
 NO$Correct=gsub("[3]", "0", NO$Correct)
@@ -40,6 +39,8 @@ NO$Correct=gsub("[2]", "0", NO$Correct)
 NO=plyr::rename(NO, c("No."="No"))
   
 NO$No=gsub('[0.]', ' ', NO$No)
+
+NO$Condition="NyOpereredeCI"
 
 #Importer Erfarne
 ER <- do.call("rbind", lapply( list.files("~/Desktop/5. Semester/Bachelor/Data/Bachelor/Erfarne",full=TRUE),
@@ -54,6 +55,8 @@ ER$Correct=gsub("[2]", "0", ER$Correct)
 ER=plyr::rename(ER, c("No."="No"))
   
 ER$No=gsub('[0.]', ' ', ER$No)
+
+ER$Condition="ErfarneCI"
 
 #Importer unge kontroller
 
@@ -70,6 +73,7 @@ UK=plyr::rename(UK, c("No."="No"))
   
 UK$No=gsub('[0.]', ' ', UK$No)
 
+UK$Condition="Unge kontroller"
 
 #Importer ældre kontroller
 
@@ -85,6 +89,8 @@ UK$No=gsub('[0.]', ' ', UK$No)
 ÆK=plyr::rename(ÆK, c("No."="No"))
   
 ÆK$No=gsub('[0.]', ' ', ÆK$No)
+
+ÆK$Condition="Ældre kontroller"
 
 ```
 

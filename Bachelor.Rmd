@@ -70,6 +70,22 @@ UK=plyr::rename(UK, c("No."="No"))
   
 UK$No=gsub('[0.]', ' ', UK$No)
 
+
+#Importer ældre kontroller
+
+ÆK <- do.call("rbind", lapply( list.files("~/Desktop/5. Semester/Bachelor/Data/Bachelor/KontrolÆldre",full=TRUE),
+		read.csv2, header=TRUE))
+
+
+ÆK$Correct=as.integer(ÆK$Correct)
+ÆK$Correct=gsub("[4]", "0", ÆK$Correct)
+ÆK$Correct=gsub("[3]", "0", ÆK$Correct)
+ÆK$Correct=gsub("[2]", "0", ÆK$Correct)
+  
+ÆK=plyr::rename(ÆK, c("No."="No"))
+  
+ÆK$No=gsub('[0.]', ' ', ÆK$No)
+
 ```
 
 

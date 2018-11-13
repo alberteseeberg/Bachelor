@@ -15,6 +15,7 @@ library(dplyr)
 library(tidyverse)
 library(rethinking)
 library(ggplot2)
+library(DataCombine)
 
 # filelistno=list.files(path="~/Desktop/5. Semester/Bachelor/Data/Bachelor/NO", pattern="*.csv", full.names=TRUE)
 # NO=NULL
@@ -37,10 +38,32 @@ NO$Correct=gsub("[3]", "0", NO$Correct)
 NO$Correct=gsub("[2]", "0", NO$Correct)
   
 NO=plyr::rename(NO, c("No."="No"))
-  
-NO$No=gsub('[0.]', ' ', NO$No)
+
+NO$No=gsub("\\..*","",NO$No)
+NO$No=gsub(" ","",NO$No)
 
 NO$Condition="NyOpereredeCI"
+
+Replaces <- data.frame(from = c("1"), to = c("IntensitetXS"))
+
+                       
+FindReplace(data=NO, Var="No", replaceData=Replaces, from = "from", to = "to", vector=TRUE)
+
+NO$Deviant = NULL
+
+for (i in 1:nrow(NO)) {
+  
+  if (NO$No[i] == "1"){ 
+    NO$Deviant[i] = "IntensitetXS"
+    }
+  else { 
+    NO$Deviant[i] = "Other"
+    }
+}
+
+NO$Deviant[NO$No == "1"] = "IntensitetXS"  
+
+NO$No=plyr::rename(NO$No, c("1"="IntensitetXS", "17"="IntensitetXS", "33"="IntensitetXS"))
 
 #Importer Erfarne
 ER <- do.call("rbind", lapply( list.files("~/Desktop/5. Semester/Bachelor/Data/Bachelor/Erfarne",full=TRUE),
@@ -54,7 +77,7 @@ ER$Correct=gsub("[2]", "0", ER$Correct)
   
 ER=plyr::rename(ER, c("No."="No"))
   
-ER$No=gsub('[0.]', ' ', ER$No)
+ER$No=gsub("\\..*","",ER$No)
 
 ER$Condition="ErfarneCI"
 
@@ -70,8 +93,8 @@ UK$Correct=gsub("[3]", "0", UK$Correct)
 UK$Correct=gsub("[2]", "0", UK$Correct)
   
 UK=plyr::rename(UK, c("No."="No"))
-  
-UK$No=gsub('[0.]', ' ', UK$No)
+
+UK$No=gsub("\\..*","",UK$No)
 
 UK$Condition="Unge kontroller"
 
@@ -88,9 +111,57 @@ UK$Condition="Unge kontroller"
   
 ÆK=plyr::rename(ÆK, c("No."="No"))
   
-ÆK$No=gsub('[0.]', ' ', ÆK$No)
+ÆK$No=gsub("\\..*","",ÆK$No)
 
 ÆK$Condition="Ældre kontroller"
+
+
+
+Q_NO=read.csv2("Spørgeskema_NO.csv", header=TRUE, sep=";")
+
+#Renaming--------
+
+Q_NO=plyr::rename(Q_NO, c("Dato.for.første.operation"="DatoOp1", "Dato.for.evt..anden.operation"="DatoOp2", "Hvor.gammel.var.du.da.de.høretab.opstod"="AlderHøretab", "Hvor.gammel.var.du.da.dit.høretab.blev.så.alvorligt.at.du.ikke.længere.havde.gavn.af.dit.høreapparat" = "AlderUdenGavnHøreapparat", "Kan.du.tale.i.telefon"="TaleTelefon", "Uddyb.1"="TaleTelefonUD.", "Havde.du.tinnitus.inden.din.CI.operation"="TinnitusPre", "Har.du.tinnitus.nu"="TinnitusPost", "Uddyb.2"="TinnitusUD.", "Bruger.du.høreapparat"="Høreapparat", "Uddyb.3"="HøreapparatUD.", "Sang...Instrument.Folkeskole"="SangInstrument1", "Sang...Instrument.Gymnasiet"="SangInstrument2", "Sang...Instrument.Videregående.uddannelse"="SangInstrument3", "Sang...Instrument.Efter.endt.uddannelse"="SangInstrument4", "Ikke.modtaget.sang..eller.instrumentundervisning"="SangInstrument0", "band...kor..eller.orkester.Folkeskole"="BandKorOrkester1","band...kor..eller.orkester.Gymnasiet"="BandKorOrkester2", "band...kor..eller.orkester.Videregående.uddannelse"="BandKorOrkester3", "band...kor..eller.orkester.Efter.endt.uddannelse"="BandKorOrkester4", "Ikke.modtaget.band...kor..eller.orkesterundervisning"="BandKorOrkester0", "Kurser.fag.i.musikhistorie.teori.Musikalske.aktiviteter.i.børnehaven"="MusikIBørnehave", "Kurser.fag.i.musikhistorie.teori.Musikundervisning.i.folkeskolen..år."="Musikundervisning1", "Kurser.fag.i.musikhistorie.teori.Gymnasie"="Musikundervisning2","Kurser.fag.i.musikhistorie.teori.Videregående.uddannelse"="Musikundervisning3", "Kurser.fag.i.musikhistorie.teori.Ved.siden.af.uddannelse"="MusikundervisningX", "Kurser.fag.i.musikhistorie.teori.Efter.uddannelse"="Musikundervisning4", "Kurser.fag.i.musikhistorie.teori.Ingen.undervisning"="Musikundervisning0", "Uddybende"= "MusikundervisningUD.", "Jeg.har.aldrig.modtaget.formel.musikundervisning.og.har.sjældent.lyttet.til.musik.tidligere..Jeg.har.kun.begrænset.viden.om.musik."="MusikViden1", "Jeg.har.aldrig.modtaget.formel.musikundervisning..men.jeg.lytter.til.musik..radio..TV..en.gang.imellem.koncerter..og.er.bekendt.med.populære.sange.og.musikere..Jeg.ved.ikke.noget.om.de.tekniske.aspekter.ved.musik.såsom.noder.og.akkorder..Jeg.kan.heller.ikke.spille.på.nogen.instrumenter."="MusikViden2", "Jeg.har.aldrig.modtaget.formel.musikundervisning..men.betragter.mig.selv.som..selvlært..musiker..Jeg.kan.spille.lidt.på.et.instrument..synge.og.eller.har.været.med.i.et.band.kor."="MusikViden3", "Jeg.har.modtaget.nogen.musikundervisning..såsom.instrument..sangundervisning..musikfag.i.skolen.eller.har.været.med.i.bands.og.eller.kor.i.folkeskolen.og.gymnasiet..Jeg.betragter.ikke.mig.selv.som.ekspert..men.jeg.kender.til.grundlæggende.musikalske.begreber."="MusikViden4", "Jeg.har.fået.en.del.musikundervisning.eller.været.med.i.bands.og.eller.kor.i.en.del.år..fx.i.folkeskolen..gymnasiet.og.lignende...Jeg.opfatter.mig.selv.som.velorienteret.med.hensyn.til.musik..Jeg.kan.læse.noder.akkorder.og.kender.en.del.til.musiktekniske.begreber."="MusikViden5", "Før..Jeg.betragtede.mig.selv.som.en.person..som.ofte.vælger.at.lytte.meget.til.musik..jeg.vælger.f.eks..at.høre.radio.i.bilen.eller.hjemme..gå.til.koncerter..se.musikprogrammer.i.fjernsynet..osv.." ="SelvBetragtLyttevanerPre", "Uddyb.4"="SelvBetragtLyttevanerPreUD.", "Efter..Jeg.betragter.mig.selv.som.en.person..som.ofte.vælger.at.lytte.meget.til.musik..jeg.vælger.f.eks..at.høre.radio.i.bilen.eller.hjemme..gå.til.koncerter..se.musikprogrammer.i.fjernsynet..osv.."="SelvBetragtLyttevanerPost", "Uddyb.5"="SelvBetragtLyttevanerPostUD.", "Før..Jeg.valgte.ofte.at.lytte.til.musik..f.eks..bevidst.at.høre.radio.i.bilen.eller.hjemme..gå.til.koncerter..se.musikprogrammer.i.fjernsynet..osv.."="LyttervanerPre", "Efter..Jeg.vælger.at.lytte.til.musik..f.eks..bevidst.at.høre.radio.i.bilen.eller.hjemme..gå.til.koncerter..se.musikprogrammer.i.fjernsynet..osv.."="LyttevanerPost"  ))
+
+#------
+
+Q_NO$DatoOp1[1]=Q_NO$DatoOp1[1]=""
+Q_NO$DatoOp1[2]=Q_NO$DatoOp1[2]=""
+Q_NO$DatoOp1[3]=Q_NO$DatoOp1[3]=""
+Q_NO$DatoOp1[4]=Q_NO$DatoOp1[4]=""
+Q_NO$DatoOp1[5]=Q_NO$DatoOp1[5]=""
+Q_NO$DatoOp1[6]=Q_NO$DatoOp1[6]=""
+Q_NO$DatoOp1[7]=Q_NO$DatoOp1[7]=""
+Q_NO$DatoOp1[8]=Q_NO$DatoOp1[8]=""
+Q_NO$DatoOp1[9]=Q_NO$DatoOp1[9]=""
+
+  
+Q_NO$DatoOp1=as.character(Q_NO$DatoOp1)
+
+Q_ER=read.csv2("Spørgeskema_EO.csv", header=TRUE, sep=";")
+#names(Q_ER)
+#Renaming------
+Q_ER=plyr::rename(Q_ER, c("Dato.for.første.operation"="DatoOp1", "Dato.for.evt..anden.operation"="DatoOp2", "Hvor.gammel.var.du.da.de.høretab.opstod"="AlderHøretab", "Hvor.gammel.var.du.da.dit.høretab.blev.så.alvorligt.at.du.ikke.længere.havde.gavn.af.dit.høreapparat" = "AlderUdenGavnHøreapparat", "Kan.du.tale.i.telefon"="TaleTelefon", "Uddyb.1"="TaleTelefonUD.", "Havde.du.tinnitus.inden.din.CI.operation"="TinnitusPre", "Har.du.tinnitus.nu"="TinnitusPost", "Uddyb.2"="TinnitusUD.", "Bruger.du.høreapparat"="Høreapparat", "Uddyb.3"="HøreapparatUD.", "Sang...Instrument.Folkeskole"="SangInstrument1", "Sang...Instrument.Gymnasiet"="SangInstrument2", "Sang...Instrument.Videregående.uddannelse"="SangInstrument3", "Sang...Instrument.Efter.endt.uddannelse"="SangInstrument4", "Ikke.modtaget.sang..eller.instrumentundervisning"="SangInstrument0", "band...kor..eller.orkester.Folkeskole"="BandKorOrkester1","band...kor..eller.orkester.Gymnasiet"="BandKorOrkester2", "band...kor..eller.orkester.Videregående.uddannelse"="BandKorOrkester3", "band...kor..eller.orkester.Efter.endt.uddannelse"="BandKorOrkester4", "Ikke.modtaget.band...kor..eller.orkesterundervisning"="BandKorOrkester0", "Kurser.fag.i.musikhistorie.teori.Musikalske.aktiviteter.i.børnehaven"="MusikIBørnehave", "Kurser.fag.i.musikhistorie.teori.Musikundervisning.i.folkeskolen..år."="Musikundervisning1", "Kurser.fag.i.musikhistorie.teori.Gymnasie"="Musikundervisning2","Kurser.fag.i.musikhistorie.teori.Videregående.uddannelse"="Musikundervisning3", "Kurser.fag.i.musikhistorie.teori.Ved.siden.af.uddannelse"="MusikundervisningX", "Kurser.fag.i.musikhistorie.teori.Efter.uddannelse"="Musikundervisning4", "Kurser.fag.i.musikhistorie.teori.Ingen.undervisning"="Musikundervisning0", "Uddybende"= "MusikundervisningUD.", "Jeg.har.aldrig.modtaget.formel.musikundervisning.og.har.sjældent.lyttet.til.musik.tidligere..Jeg.har.kun.begrænset.viden.om.musik."="MusikViden1", "Jeg.har.aldrig.modtaget.formel.musikundervisning..men.jeg.lytter.til.musik..radio..TV..en.gang.imellem.koncerter..og.er.bekendt.med.populære.sange.og.musikere..Jeg.ved.ikke.noget.om.de.tekniske.aspekter.ved.musik.såsom.noder.og.akkorder..Jeg.kan.heller.ikke.spille.på.nogen.instrumenter."="MusikViden2", "Jeg.har.aldrig.modtaget.formel.musikundervisning..men.betragter.mig.selv.som..selvlært..musiker..Jeg.kan.spille.lidt.på.et.instrument..synge.og.eller.har.været.med.i.et.band.kor."="MusikViden3", "Jeg.har.modtaget.nogen.musikundervisning..såsom.instrument..sangundervisning..musikfag.i.skolen.eller.har.været.med.i.bands.og.eller.kor.i.folkeskolen.og.gymnasiet..Jeg.betragter.ikke.mig.selv.som.ekspert..men.jeg.kender.til.grundlæggende.musikalske.begreber."="MusikViden4", "Jeg.har.fået.en.del.musikundervisning.eller.været.med.i.bands.og.eller.kor.i.en.del.år..fx.i.folkeskolen..gymnasiet.og.lignende...Jeg.opfatter.mig.selv.som.velorienteret.med.hensyn.til.musik..Jeg.kan.læse.noder.akkorder.og.kender.en.del.til.musiktekniske.begreber."="MusikViden5", "Jeg.betragter.mig.selv.som.en.person..som.ofte.vælger.at.lytte.meget.til.musik..jeg.vælger.f.eks..at.høre.radio.i.bilen.eller.hjemme..gå.til.koncerter..se.musikprogrammer.i.fjernsynet..osv.." ="SelvBetragtLyttevaner", "Uddyb.4"="SelvBetragtLyttevanerUD.",  "Jeg.vælger.at.lytte.til.musik..f.eks..bevidst.at.høre.radio.i.bilen.eller.hjemme..gå.til.koncerter..se.musikprogrammer.i.fjernsynet..osv.."="Lyttevaner"  ))
+#--------
+
+Q_KU=read.csv2("Spørgeskema_KU.csv", header=TRUE, sep=";")
+#names(Q_KU)
+#Renaming------
+
+Q_KU=plyr::rename(Q_KU, c("Sang...Instrument.Folkeskole"="SangInstrument1", "Sang...Instrument.Gymnasiet"="SangInstrument2", "Sang...Instrument.Videregående.uddannelse"="SangInstrument3", "Sang...Instrument.Efter.endt.uddannelse"="SangInstrument4", "Ikke.modtaget.sang..eller.instrumentundervisning"="SangInstrument0", "band...kor..eller.orkester.Folkeskole"="BandKorOrkester1","band...kor..eller.orkester.Gymnasiet"="BandKorOrkester2", "band...kor..eller.orkester.Videregående.uddannelse"="BandKorOrkester3", "band...kor..eller.orkester.Efter.endt.uddannelse"="BandKorOrkester4", "Ikke.modtaget.band...kor..eller.orkesterundervisning"="BandKorOrkester0", "Kurser.fag.i.musikhistorie.teori.Musikalske.aktiviteter.i.børnehaven"="MusikIBørnehave", "Kurser.fag.i.musikhistorie.teori.Musikundervisning.i.folkeskolen..år."="Musikundervisning1", "Kurser.fag.i.musikhistorie.teori.Gymnasie"="Musikundervisning2","Kurser.fag.i.musikhistorie.teori.Videregående.uddannelse"="Musikundervisning3", "Kurser.fag.i.musikhistorie.teori.Ved.siden.af.uddannelse..ja.eller.nej."="MusikundervisningX", "Kurser.fag.i.musikhistorie.teori..Efter.uddannelse"="Musikundervisning4", "Kurser.fag.i.musikhistorie.teori.Ingen.undervisning"="Musikundervisning0", "Uddybende"= "MusikundervisningUD.", "Jeg.har.aldrig.modtaget.formel.musikundervisning.og.har.sjældent.lyttet.til.musik.tidligere..Jeg.har.kun.begrænset.viden.om.musik."="MusikViden1", "Jeg.har.aldrig.modtaget.formel.musikundervisning..men.jeg.lytter.til.musik..radio..TV..en.gang.imellem.koncerter..og.er.bekendt.med.populære.sange.og.musikere..Jeg.ved.ikke.noget.om.de.tekniske.aspekter.ved.musik.såsom.noder.og.akkorder..Jeg.kan.heller.ikke.spille.på.nogen.instrumenter."="MusikViden2", "Jeg.har.aldrig.modtaget.formel.musikundervisning..men.betragter.mig.selv.som..selvlært..musiker..Jeg.kan.spille.lidt.på.et.instrument..synge.og.eller.har.været.med.i.et.band.kor."="MusikViden3", "Jeg.har.modtaget.nogen.musikundervisning..såsom.instrument..sangundervisning..musikfag.i.skolen.eller.har.været.med.i.bands.og.eller.kor.i.folkeskolen.og.gymnasiet..Jeg.betragter.ikke.mig.selv.som.ekspert..men.jeg.kender.til.grundlæggende.musikalske.begreber."="MusikViden4", "Jeg.har.fået.en.del.musikundervisning.eller.været.med.i.bands.og.eller.kor.i.en.del.år..fx.i.folkeskolen..gymnasiet.og.lignende...Jeg.opfatter.mig.selv.som.velorienteret.med.hensyn.til.musik..Jeg.kan.læse.noder.akkorder.og.kender.en.del.til.musiktekniske.begreber."="MusikViden5", "Jeg.betragter.mig.selv.som.en.person..som.ofte.vælger.at.lytte.meget.til.musik..jeg.vælger.f.eks..at.høre.radio.i.bilen.eller.hjemme..gå.til.koncerter..se.musikprogrammer.i.fjernsynet..osv.." ="SelvBetragtLyttevaner", "Uddyb"="SelvBetragtLyttevanerUD.",  "Jeg.vælger.at.lytte.til.musik..f.eks..bevidst.at.høre.radio.i.bilen.eller.hjemme..gå.til.koncerter..se.musikprogrammer.i.fjernsynet..osv.."="Lyttevaner"  ))
+#------
+
+Q_KÆ=read.csv2("Spørgeskema_KÆ.csv", header=TRUE, sep=";")
+#Renaming------
+
+Q_KÆ=plyr::rename(Q_KÆ, c("Sang...Instrument.Folkeskole"="SangInstrument1", "Sang...Instrument.Gymnasiet"="SangInstrument2", "Sang...Instrument.Videregående.uddannelse"="SangInstrument3", "Sang...Instrument.Efter.endt.uddannelse"="SangInstrument4", "Ikke.modtaget.sang..eller.instrumentundervisning"="SangInstrument0", "band...kor..eller.orkester.Folkeskole"="BandKorOrkester1","band...kor..eller.orkester.Gymnasiet"="BandKorOrkester2", "band...kor..eller.orkester.Videregående.uddannelse"="BandKorOrkester3", "band...kor..eller.orkester.Efter.endt.uddannelse"="BandKorOrkester4", "Ikke.modtaget.band...kor..eller.orkesterundervisning"="BandKorOrkester0", "Kurser.fag.i.musikhistorie.teori.Musikalske.aktiviteter.i.børnehaven"="MusikIBørnehave", "Kurser.fag.i.musikhistorie.teori.Musikundervisning.i.folkeskolen..år."="Musikundervisning1", "Kurser.fag.i.musikhistorie.teori.Gymnasie"="Musikundervisning2","Kurser.fag.i.musikhistorie.teori.Videregående.uddannelse"="Musikundervisning3", "Kurser.fag.i.musikhistorie.teori.Ved.siden.af.uddannelse"="MusikundervisningX", "Kurser.fag.i.musikhistorie.teori.Efter.uddannelse"="Musikundervisning4", "Kurser.fag.i.musikhistorie.teori.Ingen.undervisning"="Musikundervisning0", "Uddybende"= "MusikundervisningUD.", "Jeg.har.aldrig.modtaget.formel.musikundervisning.og.har.sjældent.lyttet.til.musik.tidligere..Jeg.har.kun.begrænset.viden.om.musik."="MusikViden1", "Jeg.har.aldrig.modtaget.formel.musikundervisning..men.jeg.lytter.til.musik..radio..TV..en.gang.imellem.koncerter..og.er.bekendt.med.populære.sange.og.musikere..Jeg.ved.ikke.noget.om.de.tekniske.aspekter.ved.musik.såsom.noder.og.akkorder..Jeg.kan.heller.ikke.spille.på.nogen.instrumenter."="MusikViden2", "Jeg.har.aldrig.modtaget.formel.musikundervisning..men.betragter.mig.selv.som..selvlært..musiker..Jeg.kan.spille.lidt.på.et.instrument..synge.og.eller.har.været.med.i.et.band.kor."="MusikViden3", "Jeg.har.modtaget.nogen.musikundervisning..såsom.instrument..sangundervisning..musikfag.i.skolen.eller.har.været.med.i.bands.og.eller.kor.i.folkeskolen.og.gymnasiet..Jeg.betragter.ikke.mig.selv.som.ekspert..men.jeg.kender.til.grundlæggende.musikalske.begreber."="MusikViden4", "Jeg.har.fået.en.del.musikundervisning.eller.været.med.i.bands.og.eller.kor.i.en.del.år..fx.i.folkeskolen..gymnasiet.og.lignende...Jeg.opfatter.mig.selv.som.velorienteret.med.hensyn.til.musik..Jeg.kan.læse.noder.akkorder.og.kender.en.del.til.musiktekniske.begreber."="MusikViden5", "Jeg.betragter.mig.selv.som.en.person..som.ofte.vælger.at.lytte.meget.til.musik..jeg.vælger.f.eks..at.høre.radio.i.bilen.eller.hjemme..gå.til.koncerter..se.musikprogrammer.i.fjernsynet..osv.." ="SelvBetragtLyttevaner", "Uddyb"="SelvBetragtLyttevanerUD.",  "Jeg.vælger.at.lytte.til.musik..f.eks..bevidst.at.høre.radio.i.bilen.eller.hjemme..gå.til.koncerter..se.musikprogrammer.i.fjernsynet..osv.."="Lyttevaner"  ))
+#------
+
+
+
+
+NO_all=merge(NO,Q_NO,by="ID")
+
 
 ```
 

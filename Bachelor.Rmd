@@ -15,7 +15,6 @@ library(dplyr)
 library(tidyverse)
 library(rethinking)
 library(ggplot2)
-library(DataCombine)
 
 # filelistno=list.files(path="~/Desktop/5. Semester/Bachelor/Data/Bachelor/NO", pattern="*.csv", full.names=TRUE)
 # NO=NULL
@@ -39,8 +38,11 @@ NO$Correct=gsub("[2]", "0", NO$Correct)
   
 NO=plyr::rename(NO, c("No."="No"))
 
-NO$No=gsub("\\..*","",NO$No)
-NO$No=gsub(" ","",NO$No)
+# NO$No=gsub("\\..*","",NO$No)
+# 
+# dataid1 <- NO[ which(NO$ID=='1'), ]
+# 
+# NO$No=gsub(" ","",NO$No)
 
 NO$Condition="NyOpereredeCI"
 
@@ -126,10 +128,6 @@ ER$Correct=gsub("[4]", "0", ER$Correct)
 ER$Correct=gsub("[3]", "0", ER$Correct)
 ER$Correct=gsub("[2]", "0", ER$Correct)
   
-ER=plyr::rename(ER, c("No."="No"))
-  
-ER$No=gsub("\\..*","",ER$No)
-
 ER$Condition="ErfarneCI"
 
 
@@ -267,10 +265,6 @@ UK$Deviant[UK$No == "48"] = "RhythmXL"
 ÆK$Correct=gsub("[3]", "0", ÆK$Correct)
 ÆK$Correct=gsub("[2]", "0", ÆK$Correct)
   
-ÆK=plyr::rename(ÆK, c("No."="No"))
-  
-ÆK$No=gsub("\\..*","",ÆK$No)
-
 ÆK$Condition="Ældre kontroller"
 
 #Making Deviants--------

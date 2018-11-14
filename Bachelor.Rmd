@@ -116,6 +116,7 @@ NO$Deviant[NO$No == "48"] = "RhythmXL"
 
 #------
 
+write.csv(NO, file="NOdata")
 
 
 #Importer Erfarne
@@ -184,6 +185,8 @@ ER$Deviant[ER$No == "48"] = "RhythmXL"
 
 #------
 
+write.csv(ER, file="ERdata")
+
 #Importer unge kontroller
 
 UK <- do.call("rbind", lapply( list.files("~/Desktop/5. Semester/Bachelor/Data/Bachelor/KontrolUnge",full=TRUE),
@@ -194,10 +197,6 @@ UK$Correct=as.integer(UK$Correct)
 UK$Correct=gsub("[4]", "0", UK$Correct)
 UK$Correct=gsub("[3]", "0", UK$Correct)
 UK$Correct=gsub("[2]", "0", UK$Correct)
-  
-UK=plyr::rename(UK, c("No."="No"))
-
-UK$No=gsub("\\..*","",UK$No)
 
 UK$Condition="Unge kontroller"
 
@@ -253,6 +252,8 @@ UK$Deviant[UK$No == "32"] = "RhythmXL"
 UK$Deviant[UK$No == "48"] = "RhythmXL"
 
 #------
+
+write.csv(UK, file="UKdata")
 
 #Importer ældre kontroller
 
@@ -319,6 +320,8 @@ UK$Deviant[UK$No == "48"] = "RhythmXL"
 ÆK$Deviant[ÆK$No == "48"] = "RhythmXL"
 
 #------
+
+write.csv(ÆK, file="ÆKdata")
 
 Q_NO=read.csv2("Spørgeskema_NO.csv", header=TRUE, sep=";")
 

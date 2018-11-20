@@ -51,17 +51,7 @@ NO$Condition="NyOpereredeCI"
 #                        
 # FindReplace(data=NO, Var="No", replaceData=Replaces, from = "from", to = "to", vector=TRUE)
 # 
-# NO$Deviant = NULL
-# 
-# for (i in 1:nrow(NO)) {
-#   
-#   if (NO$No[i] == "1"){ 
-#     NO$Deviant[i] = "IntensitetXS"
-#     }
-#   else { 
-#     NO$Deviant[i] = "Other"
-#     }
-# }
+
 
 #Making Deviants--------
 
@@ -115,6 +105,55 @@ NO$Deviant[NO$No == "32"] = "RhythmXL"
 NO$Deviant[NO$No == "48"] = "RhythmXL"
 
 #------
+
+
+NO$DeviantLevel = rep(NA,nrow(NO))
+
+for (i in 1:nrow(NO)) {
+
+  if (str_detect(NO$Deviant[i], "XS")){
+    NO$DeviantLevel[i] = 1
+  }
+  NO$Deviant[i]=sub("XS","",NO$Deviant[i])
+  
+  if (str_detect(NO$Deviant[i], "S")){
+    NO$DeviantLevel[i] = 2
+  }
+  NO$Deviant[i]=sub("S","",NO$Deviant[i])
+  
+  if (str_detect(NO$Deviant[i], "XL")){
+    NO$DeviantLevel[i] = 4
+  }
+  NO$Deviant[i]=sub("XL","",NO$Deviant[i])
+  
+  if (str_detect(NO$Deviant[i], "L")){
+    NO$DeviantLevel[i] = 3
+  }
+  NO$Deviant[i]=sub("L","",NO$Deviant[i])
+  
+  if (str_detect(NO$Deviant[i], "Bright")){
+    NO$DeviantLevel[i] = 1
+  }
+  NO$Deviant[i]=sub("Bright","",NO$Deviant[i])
+  
+  if (str_detect(NO$Deviant[i], "Blues")){
+    NO$DeviantLevel[i] = 2
+  }
+  NO$Deviant[i]=sub("Blues","",NO$Deviant[i])
+  
+  if (str_detect(NO$Deviant[i], "Guitar")){
+    NO$DeviantLevel[i] = 3
+  }
+  NO$Deviant[i]=sub("Guitar","",NO$Deviant[i])
+  
+  if (str_detect(NO$Deviant[i], "Trumpet")){
+    NO$DeviantLevel[i] = 4
+  }
+  NO$Deviant[i]=sub("Trumpet","",NO$Deviant[i])
+  
+}
+
+
 
 write.csv(NO, file="NOdata")
 
@@ -185,6 +224,53 @@ ER$Deviant[ER$No == "48"] = "RhythmXL"
 
 #------
 
+
+ER$DeviantLevel = rep(NA,nrow(ER))
+
+for (i in 1:nrow(ER)) {
+
+  if (str_detect(ER$Deviant[i], "XS")){
+    ER$DeviantLevel[i] = 1
+  }
+  ER$Deviant[i]=sub("XS","",ER$Deviant[i])
+  
+  if (str_detect(ER$Deviant[i], "S")){
+    ER$DeviantLevel[i] = 2
+  }
+  ER$Deviant[i]=sub("S","",ER$Deviant[i])
+  
+  if (str_detect(ER$Deviant[i], "XL")){
+    ER$DeviantLevel[i] = 4
+  }
+  ER$Deviant[i]=sub("XL","",ER$Deviant[i])
+  
+  if (str_detect(ER$Deviant[i], "L")){
+    ER$DeviantLevel[i] = 3
+  }
+  ER$Deviant[i]=sub("L","",ER$Deviant[i])
+  
+  if (str_detect(ER$Deviant[i], "Bright")){
+    ER$DeviantLevel[i] = 1
+  }
+  ER$Deviant[i]=sub("Bright","",ER$Deviant[i])
+  
+  if (str_detect(ER$Deviant[i], "Blues")){
+    ER$DeviantLevel[i] = 2
+  }
+  ER$Deviant[i]=sub("Blues","",ER$Deviant[i])
+  
+  if (str_detect(ER$Deviant[i], "Guitar")){
+    ER$DeviantLevel[i] = 3
+  }
+  ER$Deviant[i]=sub("Guitar","",ER$Deviant[i])
+  
+  if (str_detect(ER$Deviant[i], "Trumpet")){
+    ER$DeviantLevel[i] = 4
+  }
+  ER$Deviant[i]=sub("Trumpet","",ER$Deviant[i])
+  
+}
+
 write.csv(ER, file="ERdata")
 
 #Importer unge kontroller
@@ -253,6 +339,52 @@ UK$Deviant[UK$No == "48"] = "RhythmXL"
 
 #------
 
+UK$DeviantLevel = rep(NA,nrow(UK))
+
+for (i in 1:nrow(UK)) {
+
+  if (str_detect(UK$Deviant[i], "XS")){
+    UK$DeviantLevel[i] = 1
+  }
+  UK$Deviant[i]=sub("XS","",UK$Deviant[i])
+  
+  if (str_detect(UK$Deviant[i], "S")){
+    UK$DeviantLevel[i] = 2
+  }
+  UK$Deviant[i]=sub("S","",UK$Deviant[i])
+  
+  if (str_detect(UK$Deviant[i], "XL")){
+    UK$DeviantLevel[i] = 4
+  }
+  UK$Deviant[i]=sub("XL","",UK$Deviant[i])
+  
+  if (str_detect(UK$Deviant[i], "L")){
+    UK$DeviantLevel[i] = 3
+  }
+  UK$Deviant[i]=sub("L","",UK$Deviant[i])
+  
+  if (str_detect(UK$Deviant[i], "Bright")){
+    UK$DeviantLevel[i] = 1
+  }
+  UK$Deviant[i]=sub("Bright","",UK$Deviant[i])
+  
+  if (str_detect(UK$Deviant[i], "Blues")){
+    UK$DeviantLevel[i] = 2
+  }
+  UK$Deviant[i]=sub("Blues","",UK$Deviant[i])
+  
+  if (str_detect(UK$Deviant[i], "Guitar")){
+    UK$DeviantLevel[i] = 3
+  }
+  UK$Deviant[i]=sub("Guitar","",UK$Deviant[i])
+  
+  if (str_detect(UK$Deviant[i], "Trumpet")){
+    UK$DeviantLevel[i] = 4
+  }
+  UK$Deviant[i]=sub("Trumpet","",UK$Deviant[i])
+  
+}
+
 write.csv(UK, file="UKdata")
 
 #Importer ældre kontroller
@@ -320,6 +452,53 @@ write.csv(UK, file="UKdata")
 ÆK$Deviant[ÆK$No == "48"] = "RhythmXL"
 
 #------
+
+ÆK$DeviantLevel = rep(NA,nrow(ÆK))
+
+for (i in 1:nrow(ÆK)) {
+
+  if (str_detect(ÆK$Deviant[i], "XS")){
+    ÆK$DeviantLevel[i] = 1
+  }
+  ÆK$Deviant[i]=sub("XS","",ÆK$Deviant[i])
+  
+  if (str_detect(ÆK$Deviant[i], "S")){
+    ÆK$DeviantLevel[i] = 2
+  }
+  ÆK$Deviant[i]=sub("S","",ÆK$Deviant[i])
+  
+  if (str_detect(ÆK$Deviant[i], "XL")){
+    ÆK$DeviantLevel[i] = 4
+  }
+  ÆK$Deviant[i]=sub("XL","",ÆK$Deviant[i])
+  
+  if (str_detect(ÆK$Deviant[i], "L")){
+    ÆK$DeviantLevel[i] = 3
+  }
+  ÆK$Deviant[i]=sub("L","",ÆK$Deviant[i])
+  
+  if (str_detect(ÆK$Deviant[i], "Bright")){
+    ÆK$DeviantLevel[i] = 1
+  }
+  ÆK$Deviant[i]=sub("Bright","",ÆK$Deviant[i])
+  
+  if (str_detect(ÆK$Deviant[i], "Blues")){
+    ÆK$DeviantLevel[i] = 2
+  }
+  ÆK$Deviant[i]=sub("Blues","",ÆK$Deviant[i])
+  
+  if (str_detect(ÆK$Deviant[i], "Guitar")){
+    ÆK$DeviantLevel[i] = 3
+  }
+  ÆK$Deviant[i]=sub("Guitar","",ÆK$Deviant[i])
+  
+  if (str_detect(ÆK$Deviant[i], "Trumpet")){
+    ÆK$DeviantLevel[i] = 4
+  }
+  ÆK$Deviant[i]=sub("Trumpet","",ÆK$Deviant[i])
+  
+}
+
 
 write.csv(ÆK, file="ÆKdata")
 

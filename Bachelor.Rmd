@@ -16,6 +16,8 @@ library(tidyverse)
 library(rethinking)
 library(ggplot2)
 
+#All data cleaning
+
 # filelistno=list.files(path="~/Desktop/5. Semester/Bachelor/Data/Bachelor/NO", pattern="*.csv", full.names=TRUE)
 # NO=NULL
 # 
@@ -44,7 +46,7 @@ NO=plyr::rename(NO, c("No."="No"))
 # 
 # NO$No=gsub(" ","",NO$No)
 
-NO$Condition="NyOpereredeCI"
+NO$Condition="NoCI"
 
 # Replaces <- data.frame(from = c("1"), to = c("IntensitetXS"))
 # 
@@ -168,7 +170,7 @@ ER$Correct=gsub("[4]", "0", ER$Correct)
 ER$Correct=gsub("[3]", "0", ER$Correct)
 ER$Correct=gsub("[2]", "0", ER$Correct)
   
-ER$Condition="ErfarneCI"
+ER$Condition="ErCI"
 
 
 #Making Deviants--------
@@ -284,7 +286,7 @@ UK$Correct=gsub("[4]", "0", UK$Correct)
 UK$Correct=gsub("[3]", "0", UK$Correct)
 UK$Correct=gsub("[2]", "0", UK$Correct)
 
-UK$Condition="Unge kontroller"
+UK$Condition="UngK"
 
 #Making Deviants--------
 
@@ -398,7 +400,7 @@ write.csv(UK, file="UKdata")
 ÆK$Correct=gsub("[3]", "0", ÆK$Correct)
 ÆK$Correct=gsub("[2]", "0", ÆK$Correct)
   
-ÆK$Condition="Ældre kontroller"
+ÆK$Condition="ÆldK"
 
 #Making Deviants--------
 
@@ -547,13 +549,53 @@ Q_KÆ=plyr::rename(Q_KÆ, c("Sang...Instrument.Folkeskole"="SangInstrument1", "S
 
 NO_all=merge(NO,Q_NO,by="ID")
 
+AllCond=dplyr::bind_rows(NO, ER, UK, ÆK)
 
 ```
 
 
 
 ```{r}
+#Analysis
 
+library(lme4)
+library(yarrr)
+
+AllCond$Correct=as.integer(AllCond$Correct)
+AllCond$Condition=as.factor(AllCond$Condition)
+
+PitchData <- subset(AllCond, Deviant=="Pitch")
+RhythmData <- subset(AllCond, Deviant=="Rhythm")
+TimbreData <- subset(AllCond, Deviant=="Timbre")
+IntensityData <- subset(AllCond, Deviant=="Intensitet")
+
+
+#Intensity
+pirateplot(formula = Correct ~ Condition + DeviantLevel, data = IntensityData, main = "Intensity Results", xlab = "Intensity Deviant",ylab="Correct", ylim= c(0,1), theme=2, pal="ipod", avg.line.o=0.8, bar.f.o = .2, bean.b.o = .7, point.o = 0.3, point.pch = 1, back.col = "white") +
+  abline(a=0.3,0.3, b=0, lwd=2, lty="dashed") 
+
+
+
+
+#Pitch
+pirateplot(formula = Correct ~ Condition + DeviantLevel, data = PitchData, main = "Pitch Results", xlab = "Intensity Deviant",ylab="Percentage correct", ylim= c(0,1), theme=2, pal="ipod", avg.line.o=0.8, bar.f.o = .2, bean.b.o = .7, point.o = 0.3, point.pch = 1, back.col = "white") +
+  abline(a=0.3,0.3, b=0, lwd=2, lty="dashed") 
+
+#Timbre
+pirateplot(formula = Correct ~ Condition + DeviantLevel, data = TimbreData, main = "Pitch Results", xlab = "Intensity Deviant",ylab="Percentage correct", ylim= c(0,1), theme=2, pal="ipod", avg.line.o=0.8, bar.f.o = .2, bean.b.o = .7, point.o = 0.3, point.pch = 1, back.col = "white") +
+  abline(a=0.3,0.3, b=0, lwd=2, lty="dashed") 
+
+#Rhythm
+pirateplot(formula = Correct ~ Condition + DeviantLevel, data = RhythmData, main = "Pitch Results", xlab = "Intensity Deviant",ylab="Percentage correct", ylim= c(0,1), theme=2, pal="ipod", avg.line.o=0.8, bar.f.o = .2, bean.b.o = .7, point.o = 0.3, point.pch = 1, back.col = "white") +
+  abline(a=0.3,0.3, b=0, lwd=2, lty="dashed") 
+
+model1 = glmer(Correct ~ Condition+(1|ID), data=AllCond, family=poisson)
+summary(model1)
+
+
+model2 = glmer(Correct ~Condition*Deviant*DeviantLevel+(1|ID), data=AllCond, family=poisson)
+summary(model2)
+print(model2, correlation=TRUE)
 ```
 
 

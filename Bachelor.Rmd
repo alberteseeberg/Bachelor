@@ -15,6 +15,7 @@ library(dplyr)
 library(tidyverse)
 library(rethinking)
 library(ggplot2)
+library(hellno)
 
 #All data cleaning
 
@@ -46,7 +47,7 @@ NO=plyr::rename(NO, c("No."="No"))
 # 
 # NO$No=gsub(" ","",NO$No)
 
-NO$Condition="NoCI"
+NO$Condition="CI_re"
 
 # Replaces <- data.frame(from = c("1"), to = c("IntensitetXS"))
 # 
@@ -169,7 +170,7 @@ ER$Correct=gsub("[4]", "0", ER$Correct)
 ER$Correct=gsub("[3]", "0", ER$Correct)
 ER$Correct=gsub("[2]", "0", ER$Correct)
   
-ER$Condition="ErCI"
+ER$Condition="CI_ex"
 
 
 #Making Deviants--------
@@ -285,7 +286,7 @@ UK$Correct=gsub("[4]", "0", UK$Correct)
 UK$Correct=gsub("[3]", "0", UK$Correct)
 UK$Correct=gsub("[2]", "0", UK$Correct)
 
-UK$Condition="UngK"
+UK$Condition="Control_y"
 
 #Making Deviants--------
 
@@ -399,7 +400,7 @@ write.csv(UK, file="UKdata")
 ÆK$Correct=gsub("[3]", "0", ÆK$Correct)
 ÆK$Correct=gsub("[2]", "0", ÆK$Correct)
   
-ÆK$Condition="ÆldK"
+ÆK$Condition="Control_e"
 
 #Making Deviants--------
 
@@ -509,7 +510,7 @@ Q_NO=read.csv2("Spørgeskema_NO.csv", header=TRUE, sep=";", na.strings=c(""))
 
 #Renaming--------
 
-Q_NO=plyr::rename(Q_NO, c("Dato.for.første.operation"="DatoOp1", "Dato.for.evt..anden.operation"="DatoOp2", "Hvor.gammel.var.du.da.de.høretab.opstod"="AlderHøretab", "Hvor.gammel.var.du.da.dit.høretab.blev.så.alvorligt.at.du.ikke.længere.havde.gavn.af.dit.høreapparat" = "AlderUdenGavnHøreapparat", "Kan.du.tale.i.telefon"="TaleTelefon", "Uddyb.1"="TaleTelefonUD.", "Havde.du.tinnitus.inden.din.CI.operation"="TinnitusPre", "Har.du.tinnitus.nu"="TinnitusPost", "Uddyb.2"="TinnitusUD.", "Bruger.du.høreapparat"="Høreapparat", "Uddyb.3"="HøreapparatUD.", "Sang...Instrument.Folkeskole"="SangInstrument1", "Sang...Instrument.Gymnasiet"="SangInstrument2", "Sang...Instrument.Videregående.uddannelse"="SangInstrument3", "Sang...Instrument.Efter.endt.uddannelse"="SangInstrument4", "Ikke.modtaget.sang..eller.instrumentundervisning"="SangInstrument0", "band...kor..eller.orkester.Folkeskole"="BandKorOrkester1","band...kor..eller.orkester.Gymnasiet"="BandKorOrkester2", "band...kor..eller.orkester.Videregående.uddannelse"="BandKorOrkester3", "band...kor..eller.orkester.Efter.endt.uddannelse"="BandKorOrkester4", "Ikke.modtaget.band...kor..eller.orkesterundervisning"="BandKorOrkester0", "Kurser.fag.i.musikhistorie.teori.Musikalske.aktiviteter.i.børnehaven"="MusikIBørnehave", "Kurser.fag.i.musikhistorie.teori.Musikundervisning.i.folkeskolen..år."="Musikundervisning1", "Kurser.fag.i.musikhistorie.teori.Gymnasie"="Musikundervisning2","Kurser.fag.i.musikhistorie.teori.Videregående.uddannelse"="Musikundervisning3", "Kurser.fag.i.musikhistorie.teori.Ved.siden.af.uddannelse"="MusikundervisningX", "Kurser.fag.i.musikhistorie.teori.Efter.uddannelse"="Musikundervisning4", "Kurser.fag.i.musikhistorie.teori.Ingen.undervisning"="Musikundervisning0", "Uddybende"= "MusikundervisningUD.", "Jeg.har.aldrig.modtaget.formel.musikundervisning.og.har.sjældent.lyttet.til.musik.tidligere..Jeg.har.kun.begrænset.viden.om.musik."="MusikViden1", "Jeg.har.aldrig.modtaget.formel.musikundervisning..men.jeg.lytter.til.musik..radio..TV..en.gang.imellem.koncerter..og.er.bekendt.med.populære.sange.og.musikere..Jeg.ved.ikke.noget.om.de.tekniske.aspekter.ved.musik.såsom.noder.og.akkorder..Jeg.kan.heller.ikke.spille.på.nogen.instrumenter."="MusikViden2", "Jeg.har.aldrig.modtaget.formel.musikundervisning..men.betragter.mig.selv.som..selvlært..musiker..Jeg.kan.spille.lidt.på.et.instrument..synge.og.eller.har.været.med.i.et.band.kor."="MusikViden3", "Jeg.har.modtaget.nogen.musikundervisning..såsom.instrument..sangundervisning..musikfag.i.skolen.eller.har.været.med.i.bands.og.eller.kor.i.folkeskolen.og.gymnasiet..Jeg.betragter.ikke.mig.selv.som.ekspert..men.jeg.kender.til.grundlæggende.musikalske.begreber."="MusikViden4", "Jeg.har.fået.en.del.musikundervisning.eller.været.med.i.bands.og.eller.kor.i.en.del.år..fx.i.folkeskolen..gymnasiet.og.lignende...Jeg.opfatter.mig.selv.som.velorienteret.med.hensyn.til.musik..Jeg.kan.læse.noder.akkorder.og.kender.en.del.til.musiktekniske.begreber."="MusikViden5", "Før..Jeg.betragtede.mig.selv.som.en.person..som.ofte.vælger.at.lytte.meget.til.musik..jeg.vælger.f.eks..at.høre.radio.i.bilen.eller.hjemme..gå.til.koncerter..se.musikprogrammer.i.fjernsynet..osv.." ="SelvBetragtLyttevanerPre", "Uddyb.4"="SelvBetragtLyttevanerPreUD.", "Efter..Jeg.betragter.mig.selv.som.en.person..som.ofte.vælger.at.lytte.meget.til.musik..jeg.vælger.f.eks..at.høre.radio.i.bilen.eller.hjemme..gå.til.koncerter..se.musikprogrammer.i.fjernsynet..osv.."="SelvBetragtLyttevanerPost", "Uddyb.5"="SelvBetragtLyttevanerPostUD.", "Før..Jeg.valgte.ofte.at.lytte.til.musik..f.eks..bevidst.at.høre.radio.i.bilen.eller.hjemme..gå.til.koncerter..se.musikprogrammer.i.fjernsynet..osv.."="LyttevanerPre", "Efter..Jeg.vælger.at.lytte.til.musik..f.eks..bevidst.at.høre.radio.i.bilen.eller.hjemme..gå.til.koncerter..se.musikprogrammer.i.fjernsynet..osv.."="LyttevanerPost"  ))
+Q_NO=plyr::rename(Q_NO, c("Dato.for.første.operation"="DatoOp1", "Dato.for.evt..anden.operation"="DatoOp2", "Hvor.gammel.var.du.da.de.høretab.opstod"="AlderHøretab", "Hvor.gammel.var.du.da.dit.høretab.blev.så.alvorligt.at.du.ikke.længere.havde.gavn.af.dit.høreapparat" = "AlderUdenGavnHøreapparat", "Kan.du.tale.i.telefon"="TaleTelefon", "Uddyb.1"="TaleTelefonUD.", "Havde.du.tinnitus.inden.din.CI.operation"="TinnitusPre", "Har.du.tinnitus.nu"="TinnitusPost", "Uddyb.2"="TinnitusUD.", "Bruger.du.høreapparat"="Høreapparat", "Uddyb.3"="HøreapparatUD.", "Før..Jeg.valgte.ofte.at.lytte.til.musik..f.eks..bevidst.at.høre.radio.i.bilen.eller.hjemme..gå.til.koncerter..se.musikprogrammer.i.fjernsynet..osv.."="LyttevanerPre", "Efter..Jeg.vælger.at.lytte.til.musik..f.eks..bevidst.at.høre.radio.i.bilen.eller.hjemme..gå.til.koncerter..se.musikprogrammer.i.fjernsynet..osv.."="Lyttevaner"  ))
 
 #------
 
@@ -536,32 +537,20 @@ Q_NO$AlderHøretab[Q_NO$AlderHøretab=="Ca.8 år"] = "8"
 Q_NO$AlderHøretab[Q_NO$AlderHøretab=="Født med det"] = "0"
 Q_NO$AlderHøretab=as.integer(Q_NO$AlderHøretab)
 Q_NO$AlderUdenGavnHøreapparat=as.integer(Q_NO$AlderUdenGavnHøreapparat)
-Q_NO$SangInstrument1=as.character(Q_NO$SangInstrument1)
-Q_NO$SangInstrument1[Q_NO$SangInstrument1=="ca. 2-3"] = "3"
-Q_NO$SangInstrument1=as.integer(Q_NO$SangInstrument1)
-Q_NO$SangInstrument4=as.character(Q_NO$SangInstrument4)
-Q_NO$SangInstrument4[Q_NO$SangInstrument4=="ca. 1-2"] = "2"
-Q_NO$SangInstrument4=as.integer(Q_NO$SangInstrument4)
-Q_NO$MusikIBørnehave=as.character(Q_NO$MusikIBørnehave)
-Q_NO$MusikIBørnehave[Q_NO$MusikIBørnehave=="nej"] = "0"
-Q_NO$MusikIBørnehave[Q_NO$MusikIBørnehave=="ja"] = "1"
-Q_NO$MusikIBørnehave=as.integer(Q_NO$MusikIBørnehave)
-Q_NO$Musikundervisning1=as.character(Q_NO$Musikundervisning1)
-Q_NO$Musikundervisning1[Q_NO$Musikundervisning1=="nej"] = "0"
-Q_NO$Musikundervisning1[Q_NO$Musikundervisning1=="ca 2-3"] = "3"
-Q_NO$Musikundervisning1=as.integer(Q_NO$Musikundervisning1)
+
 
 #------
 
 Q_NO$LyttevanerPre=ordered(Q_NO$LyttevanerPre, levels = c("0-2 timer", "3-5 timer", "6-8 timer", "9 eller flere"))
 
 
-Q_NO$LyttevanerPost=ordered(Q_NO$LyttevanerPost, levels = c("0-2 timer", "3-5 timer", "6-8 timer", "9 eller flere"))
+Q_NO$Lyttevaner=ordered(Q_NO$Lyttevaner, levels = c("0-2 timer", "3-5 timer", "6-8 timer", "9 eller flere"))
 
 ID=c("1","2","3","4","5","6","7","8","9","10")
 ÅrUdenHørelse=c("8","3","0","2","16","0","0","1","9","1")
+Musikviden=c("3","2","3","4","2","2","2","5","5","2")
 AlderOP=Q_NO$Alder
-NO_døvedata=data.frame(ID,ÅrUdenHørelse,AlderOP)
+NO_døvedata=data.frame(ID,ÅrUdenHørelse,AlderOP, Musikviden)
 
 
 Q_NO=merge(Q_NO, NO_døvedata,by="ID")
@@ -572,13 +561,13 @@ Q_NO=within(Q_NO, rm(Uddyb))
 Q_NO=within(Q_NO, rm(TaleTelefonUD.))
 Q_NO=within(Q_NO, rm(TinnitusUD.))
 Q_NO=within(Q_NO, rm(HøreapparatUD.))
-Q_NO=within(Q_NO, rm(MusikundervisningUD.))
-Q_NO=within(Q_NO, rm(SelvBetragtLyttevanerPreUD.))
-Q_NO=within(Q_NO, rm(SelvBetragtLyttevanerPostUD.))
-Q_NO=within(Q_NO, rm(SelvBetragtLyttevanerPre))
-Q_NO=within(Q_NO, rm(SelvBetragtLyttevanerPost))
 
 #-----
+
+Q_NO$Musikviden=ordered(Q_NO$Musikviden, levels = c("1", "2", "3", "4", "5"))
+
+Q_NO$AlderOP=as.integer(Q_NO$AlderOP)
+Q_NO$ÅrUdenHørelse=as.integer(Q_NO$ÅrUdenHørelse)
 
 write.csv(Q_NO, file="Q_NO")
 
@@ -587,7 +576,7 @@ write.csv(Q_NO, file="Q_NO")
 Q_ER=read.csv2("Spørgeskema_EO.csv", header=TRUE, sep=";")
 #names(Q_ER)
 #Renaming------
-Q_ER=plyr::rename(Q_ER, c("Dato.for.første.operation"="DatoOp1", "Dato.for.evt..anden.operation"="DatoOp2", "Hvor.gammel.var.du.da.de.høretab.opstod"="AlderHøretab", "Hvor.gammel.var.du.da.dit.høretab.blev.så.alvorligt.at.du.ikke.længere.havde.gavn.af.dit.høreapparat" = "AlderUdenGavnHøreapparat", "Kan.du.tale.i.telefon"="TaleTelefon", "Uddyb.1"="TaleTelefonUD.", "Havde.du.tinnitus.inden.din.CI.operation"="TinnitusPre", "Har.du.tinnitus.nu"="TinnitusPost", "Uddyb.2"="TinnitusUD.", "Bruger.du.høreapparat"="Høreapparat", "Uddyb.3"="HøreapparatUD.", "Sang...Instrument.Folkeskole"="SangInstrument1", "Sang...Instrument.Gymnasiet"="SangInstrument2", "Sang...Instrument.Videregående.uddannelse"="SangInstrument3", "Sang...Instrument.Efter.endt.uddannelse"="SangInstrument4", "Ikke.modtaget.sang..eller.instrumentundervisning"="SangInstrument0", "band...kor..eller.orkester.Folkeskole"="BandKorOrkester1","band...kor..eller.orkester.Gymnasiet"="BandKorOrkester2", "band...kor..eller.orkester.Videregående.uddannelse"="BandKorOrkester3", "band...kor..eller.orkester.Efter.endt.uddannelse"="BandKorOrkester4", "Ikke.modtaget.band...kor..eller.orkesterundervisning"="BandKorOrkester0", "Kurser.fag.i.musikhistorie.teori.Musikalske.aktiviteter.i.børnehaven"="MusikIBørnehave", "Kurser.fag.i.musikhistorie.teori.Musikundervisning.i.folkeskolen..år."="Musikundervisning1", "Kurser.fag.i.musikhistorie.teori.Gymnasie"="Musikundervisning2","Kurser.fag.i.musikhistorie.teori.Videregående.uddannelse"="Musikundervisning3", "Kurser.fag.i.musikhistorie.teori.Ved.siden.af.uddannelse"="MusikundervisningX", "Kurser.fag.i.musikhistorie.teori.Efter.uddannelse"="Musikundervisning4", "Kurser.fag.i.musikhistorie.teori.Ingen.undervisning"="Musikundervisning0", "Uddybende"= "MusikundervisningUD.", "Jeg.har.aldrig.modtaget.formel.musikundervisning.og.har.sjældent.lyttet.til.musik.tidligere..Jeg.har.kun.begrænset.viden.om.musik."="MusikViden1", "Jeg.har.aldrig.modtaget.formel.musikundervisning..men.jeg.lytter.til.musik..radio..TV..en.gang.imellem.koncerter..og.er.bekendt.med.populære.sange.og.musikere..Jeg.ved.ikke.noget.om.de.tekniske.aspekter.ved.musik.såsom.noder.og.akkorder..Jeg.kan.heller.ikke.spille.på.nogen.instrumenter."="MusikViden2", "Jeg.har.aldrig.modtaget.formel.musikundervisning..men.betragter.mig.selv.som..selvlært..musiker..Jeg.kan.spille.lidt.på.et.instrument..synge.og.eller.har.været.med.i.et.band.kor."="MusikViden3", "Jeg.har.modtaget.nogen.musikundervisning..såsom.instrument..sangundervisning..musikfag.i.skolen.eller.har.været.med.i.bands.og.eller.kor.i.folkeskolen.og.gymnasiet..Jeg.betragter.ikke.mig.selv.som.ekspert..men.jeg.kender.til.grundlæggende.musikalske.begreber."="MusikViden4", "Jeg.har.fået.en.del.musikundervisning.eller.været.med.i.bands.og.eller.kor.i.en.del.år..fx.i.folkeskolen..gymnasiet.og.lignende...Jeg.opfatter.mig.selv.som.velorienteret.med.hensyn.til.musik..Jeg.kan.læse.noder.akkorder.og.kender.en.del.til.musiktekniske.begreber."="MusikViden5", "Jeg.betragter.mig.selv.som.en.person..som.ofte.vælger.at.lytte.meget.til.musik..jeg.vælger.f.eks..at.høre.radio.i.bilen.eller.hjemme..gå.til.koncerter..se.musikprogrammer.i.fjernsynet..osv.." ="SelvBetragtLyttevaner", "Uddyb.4"="SelvBetragtLyttevanerUD.",  "Jeg.vælger.at.lytte.til.musik..f.eks..bevidst.at.høre.radio.i.bilen.eller.hjemme..gå.til.koncerter..se.musikprogrammer.i.fjernsynet..osv.."="Lyttevaner"  ))
+Q_ER=plyr::rename(Q_ER, c("Dato.for.første.operation"="DatoOp1", "Dato.for.evt..anden.operation"="DatoOp2", "Hvor.gammel.var.du.da.de.høretab.opstod"="AlderHøretab", "Hvor.gammel.var.du.da.dit.høretab.blev.så.alvorligt.at.du.ikke.længere.havde.gavn.af.dit.høreapparat" = "AlderUdenGavnHøreapparat", "Kan.du.tale.i.telefon"="TaleTelefon", "Uddyb.1"="TaleTelefonUD.", "Havde.du.tinnitus.inden.din.CI.operation"="TinnitusPre", "Har.du.tinnitus.nu"="TinnitusPost", "Uddyb.2"="TinnitusUD.", "Bruger.du.høreapparat"="Høreapparat", "Uddyb.3"="HøreapparatUD.",  "Jeg.vælger.at.lytte.til.musik..f.eks..bevidst.at.høre.radio.i.bilen.eller.hjemme..gå.til.koncerter..se.musikprogrammer.i.fjernsynet..osv.."="Lyttevaner"  ))
 #--------
 
 Q_ER$Køn=as.character(Q_ER$Køn)
@@ -606,25 +595,23 @@ Q_ER=within(Q_ER, rm(Uddyb))
 Q_ER=within(Q_ER, rm(TaleTelefonUD.))
 Q_ER=within(Q_ER, rm(TinnitusUD.))
 Q_ER=within(Q_ER, rm(HøreapparatUD.))
-Q_ER=within(Q_ER, rm(MusikundervisningUD.))
-Q_ER=within(Q_ER, rm(SelvBetragtLyttevanerUD.))
-Q_ER=within(Q_ER, rm(SelvBetragtLyttevaner))
 
 #------
-
-
-Q_ER$SangInstrument4=as.character(Q_ER$SangInstrument4)
-Q_ER$SangInstrument4[Q_ER$SangInstrument4=="periodevis gennem nogle år"] = "2"
-Q_ER$SangInstrument4=as.integer(Q_ER$SangInstrument4)
 
 
 ID=c("201","202","203","204","205","206","207","208","209","210", "211")
 ÅrUdenHørelse=c("4","0","0","2","0","3","0","0","0","1","1")
 AlderOP=c("62","39","47","47","56","50","42","59","73","36","25")
+Musikviden=c("2","4","4","2","5","2","2","2","4","4","2")
 
-ER_døvedata=data.frame(ID,ÅrUdenHørelse, AlderOP)
+ER_døvedata=data.frame(ID,ÅrUdenHørelse, AlderOP, Musikviden)
 
 Q_ER=merge(Q_ER,ER_døvedata, by="ID")
+
+Q_ER$Musikviden=ordered(Q_ER$Musikviden, levels = c("1", "2", "3", "4", "5"))
+
+Q_ER$AlderOP=as.integer(Q_ER$AlderOP)
+Q_ER$ÅrUdenHørelse=as.integer(Q_ER$ÅrUdenHørelse)
 
 write.csv(Q_ER, file="Q_ER")
 
@@ -633,14 +620,19 @@ Q_KU=read.csv2("Spørgeskema_KU.csv", header=TRUE, sep=";")
 #names(Q_KU)
 #Renaming------
 
-Q_KU=plyr::rename(Q_KU, c("Sang...Instrument.Folkeskole"="SangInstrument1", "Sang...Instrument.Gymnasiet"="SangInstrument2", "Sang...Instrument.Videregående.uddannelse"="SangInstrument3", "Sang...Instrument.Efter.endt.uddannelse"="SangInstrument4", "Ikke.modtaget.sang..eller.instrumentundervisning"="SangInstrument0", "band...kor..eller.orkester.Folkeskole"="BandKorOrkester1","band...kor..eller.orkester.Gymnasiet"="BandKorOrkester2", "band...kor..eller.orkester.Videregående.uddannelse"="BandKorOrkester3", "band...kor..eller.orkester.Efter.endt.uddannelse"="BandKorOrkester4", "Ikke.modtaget.band...kor..eller.orkesterundervisning"="BandKorOrkester0", "Kurser.fag.i.musikhistorie.teori.Musikalske.aktiviteter.i.børnehaven"="MusikIBørnehave", "Kurser.fag.i.musikhistorie.teori.Musikundervisning.i.folkeskolen..år."="Musikundervisning1", "Kurser.fag.i.musikhistorie.teori.Gymnasie"="Musikundervisning2","Kurser.fag.i.musikhistorie.teori.Videregående.uddannelse"="Musikundervisning3", "Kurser.fag.i.musikhistorie.teori.Ved.siden.af.uddannelse..ja.eller.nej."="MusikundervisningX", "Kurser.fag.i.musikhistorie.teori..Efter.uddannelse"="Musikundervisning4", "Kurser.fag.i.musikhistorie.teori.Ingen.undervisning"="Musikundervisning0", "Uddybende"= "MusikundervisningUD.", "Jeg.har.aldrig.modtaget.formel.musikundervisning.og.har.sjældent.lyttet.til.musik.tidligere..Jeg.har.kun.begrænset.viden.om.musik."="MusikViden1", "Jeg.har.aldrig.modtaget.formel.musikundervisning..men.jeg.lytter.til.musik..radio..TV..en.gang.imellem.koncerter..og.er.bekendt.med.populære.sange.og.musikere..Jeg.ved.ikke.noget.om.de.tekniske.aspekter.ved.musik.såsom.noder.og.akkorder..Jeg.kan.heller.ikke.spille.på.nogen.instrumenter."="MusikViden2", "Jeg.har.aldrig.modtaget.formel.musikundervisning..men.betragter.mig.selv.som..selvlært..musiker..Jeg.kan.spille.lidt.på.et.instrument..synge.og.eller.har.været.med.i.et.band.kor."="MusikViden3", "Jeg.har.modtaget.nogen.musikundervisning..såsom.instrument..sangundervisning..musikfag.i.skolen.eller.har.været.med.i.bands.og.eller.kor.i.folkeskolen.og.gymnasiet..Jeg.betragter.ikke.mig.selv.som.ekspert..men.jeg.kender.til.grundlæggende.musikalske.begreber."="MusikViden4", "Jeg.har.fået.en.del.musikundervisning.eller.været.med.i.bands.og.eller.kor.i.en.del.år..fx.i.folkeskolen..gymnasiet.og.lignende...Jeg.opfatter.mig.selv.som.velorienteret.med.hensyn.til.musik..Jeg.kan.læse.noder.akkorder.og.kender.en.del.til.musiktekniske.begreber."="MusikViden5", "Jeg.betragter.mig.selv.som.en.person..som.ofte.vælger.at.lytte.meget.til.musik..jeg.vælger.f.eks..at.høre.radio.i.bilen.eller.hjemme..gå.til.koncerter..se.musikprogrammer.i.fjernsynet..osv.." ="SelvBetragtLyttevaner", "Uddyb"="SelvBetragtLyttevanerUD.",  "Jeg.vælger.at.lytte.til.musik..f.eks..bevidst.at.høre.radio.i.bilen.eller.hjemme..gå.til.koncerter..se.musikprogrammer.i.fjernsynet..osv.."="Lyttevaner"  ))
+Q_KU=plyr::rename(Q_KU, c(  "Jeg.vælger.at.lytte.til.musik..f.eks..bevidst.at.høre.radio.i.bilen.eller.hjemme..gå.til.koncerter..se.musikprogrammer.i.fjernsynet..osv.."="Lyttevaner"  ))
 #------
 
 Q_KU$Lyttevaner=ordered(Q_KU$Lyttevaner, levels = c("0-2 timer", "3-5 timer", "6-8 timer", "9 eller flere"))
 
-Q_KU=within(Q_KU, rm(MusikundervisningUD.))
-Q_KU=within(Q_KU, rm(SelvBetragtLyttevanerUD.))
-Q_KU=within(Q_KU, rm(SelvBetragtLyttevaner))
+ID=c("101","102","103","104","105","106","107","108","109","110","111","112","113","114","115","116","117")
+Musikviden=c("5","4","2","5","4","4","5","4","4","4","4","5","5","4","4","2","4")
+
+UK_musik=data.frame(ID,Musikviden)
+
+Q_KU=merge(Q_KU,UK_musik, by="ID")
+
+Q_KU$Musikviden=ordered(Q_KU$Musikviden, levels = c("1", "2", "3", "4", "5"))
 
 write.csv(Q_KU, file="Q_KU")
 
@@ -649,15 +641,19 @@ write.csv(Q_KU, file="Q_KU")
 Q_KÆ=read.csv2("Spørgeskema_KÆ.csv", header=TRUE, sep=";")
 #Renaming------
 
-Q_KÆ=plyr::rename(Q_KÆ, c("Sang...Instrument.Folkeskole"="SangInstrument1", "Sang...Instrument.Gymnasiet"="SangInstrument2", "Sang...Instrument.Videregående.uddannelse"="SangInstrument3", "Sang...Instrument.Efter.endt.uddannelse"="SangInstrument4", "Ikke.modtaget.sang..eller.instrumentundervisning"="SangInstrument0", "band...kor..eller.orkester.Folkeskole"="BandKorOrkester1","band...kor..eller.orkester.Gymnasiet"="BandKorOrkester2", "band...kor..eller.orkester.Videregående.uddannelse"="BandKorOrkester3", "band...kor..eller.orkester.Efter.endt.uddannelse"="BandKorOrkester4", "Ikke.modtaget.band...kor..eller.orkesterundervisning"="BandKorOrkester0", "Kurser.fag.i.musikhistorie.teori.Musikalske.aktiviteter.i.børnehaven"="MusikIBørnehave", "Kurser.fag.i.musikhistorie.teori.Musikundervisning.i.folkeskolen..år."="Musikundervisning1", "Kurser.fag.i.musikhistorie.teori.Gymnasie"="Musikundervisning2","Kurser.fag.i.musikhistorie.teori.Videregående.uddannelse"="Musikundervisning3", "Kurser.fag.i.musikhistorie.teori.Ved.siden.af.uddannelse"="MusikundervisningX", "Kurser.fag.i.musikhistorie.teori.Efter.uddannelse"="Musikundervisning4", "Kurser.fag.i.musikhistorie.teori.Ingen.undervisning"="Musikundervisning0", "Uddybende"= "MusikundervisningUD.", "Jeg.har.aldrig.modtaget.formel.musikundervisning.og.har.sjældent.lyttet.til.musik.tidligere..Jeg.har.kun.begrænset.viden.om.musik."="MusikViden1", "Jeg.har.aldrig.modtaget.formel.musikundervisning..men.jeg.lytter.til.musik..radio..TV..en.gang.imellem.koncerter..og.er.bekendt.med.populære.sange.og.musikere..Jeg.ved.ikke.noget.om.de.tekniske.aspekter.ved.musik.såsom.noder.og.akkorder..Jeg.kan.heller.ikke.spille.på.nogen.instrumenter."="MusikViden2", "Jeg.har.aldrig.modtaget.formel.musikundervisning..men.betragter.mig.selv.som..selvlært..musiker..Jeg.kan.spille.lidt.på.et.instrument..synge.og.eller.har.været.med.i.et.band.kor."="MusikViden3", "Jeg.har.modtaget.nogen.musikundervisning..såsom.instrument..sangundervisning..musikfag.i.skolen.eller.har.været.med.i.bands.og.eller.kor.i.folkeskolen.og.gymnasiet..Jeg.betragter.ikke.mig.selv.som.ekspert..men.jeg.kender.til.grundlæggende.musikalske.begreber."="MusikViden4", "Jeg.har.fået.en.del.musikundervisning.eller.været.med.i.bands.og.eller.kor.i.en.del.år..fx.i.folkeskolen..gymnasiet.og.lignende...Jeg.opfatter.mig.selv.som.velorienteret.med.hensyn.til.musik..Jeg.kan.læse.noder.akkorder.og.kender.en.del.til.musiktekniske.begreber."="MusikViden5", "Jeg.betragter.mig.selv.som.en.person..som.ofte.vælger.at.lytte.meget.til.musik..jeg.vælger.f.eks..at.høre.radio.i.bilen.eller.hjemme..gå.til.koncerter..se.musikprogrammer.i.fjernsynet..osv.." ="SelvBetragtLyttevaner", "Uddyb"="SelvBetragtLyttevanerUD.",  "Jeg.vælger.at.lytte.til.musik..f.eks..bevidst.at.høre.radio.i.bilen.eller.hjemme..gå.til.koncerter..se.musikprogrammer.i.fjernsynet..osv.."="Lyttevaner"  ))
+Q_KÆ=plyr::rename(Q_KÆ, c("Jeg.vælger.at.lytte.til.musik..f.eks..bevidst.at.høre.radio.i.bilen.eller.hjemme..gå.til.koncerter..se.musikprogrammer.i.fjernsynet..osv.."="Lyttevaner"  ))
 #------
 
 Q_KÆ$Lyttevaner=ordered(Q_KÆ$Lyttevaner, levels = c("0-2 timer", "3-5 timer", "6-8 timer", "9 eller flere"))
 
-Q_KÆ=within(Q_KÆ, rm(MusikundervisningUD.))
-Q_KÆ=within(Q_KÆ, rm(SelvBetragtLyttevanerUD.))
-Q_KÆ=within(Q_KÆ, rm(SelvBetragtLyttevaner))
+ID=c("301","302","303","304","305","306","307","308","309","310","311","312","313","314")
+Musikviden=c("4","2","4","4","2","2","4","4","3","4","1","2","2","2")
 
+ÆK_musik=data.frame(ID,Musikviden)
+
+Q_KÆ=merge(Q_KÆ,ÆK_musik, by="ID")
+
+Q_KÆ$Musikviden=ordered(Q_KÆ$Musikviden, levels = c("1", "2", "3", "4", "5"))
 
 write.csv(Q_KÆ, file="Q_KÆ")
 
@@ -666,8 +662,25 @@ write.csv(Q_KÆ, file="Q_KÆ")
 
 #ALT DATA (SAMLING) 
 NO_all=merge(NO,Q_NO,by="ID")
+ER_all=merge(ER,Q_ER,by="ID")
 
-AllCond=dplyr::bind_rows(NO, ER, UK, ÆK)
+
+KU_all=merge(UK, Q_KU, by="ID")
+ÆK_all=merge(ÆK, Q_KÆ, by="ID")
+
+CIData=dplyr::bind_rows(NO_all, ER_all)
+
+CIData$Group="CI"
+
+Control=dplyr::bind_rows(KU_all, ÆK_all)
+
+Control$Group="Control"
+
+AllData=dplyr::bind_rows(CIData, Control)
+
+write.csv(AllData, file="AltData")
+
+
 
 ```
 
@@ -679,11 +692,37 @@ AllCond=dplyr::bind_rows(NO, ER, UK, ÆK)
 library(lme4)
 library(yarrr)
 
+AllData$Correct=as.integer(AllData$Correct)
+
 AllCond$Correct=as.integer(AllCond$Correct)
 AllCond$Condition=as.factor(AllCond$Condition)
 
+sum(AllData$Correct[AllData$Condition=="CI_re"])
+#603
+sum(AllData$Correct[AllData$Condition=="CI_ex"])
+#709
+sum(AllCond$Correct[AllCond$Condition=="Control_e"])
+#1095
+sum(AllCond$Correct[AllCond$Condition=="Control_y"])
+#1506
+
+
+
 PitchData <- subset(AllCond, Deviant=="Pitch")
+sum(PitchData$Correct[PitchData$Condition=="CI_re"])
+#185
+
+sum(PitchData$Correct[PitchData$Condition=="CI_ex"])
+#178
+
+sum(PitchData$Correct[PitchData$Condition=="Control_e"])
+#313
+
+sum(PitchData$Correct[PitchData$Condition=="Control_y"])
+#404
+
 RhythmData <- subset(AllCond, Deviant=="Rhythm")
+
 TimbreData <- subset(AllCond, Deviant=="Timbre")
 IntensityData <- subset(AllCond, Deviant=="Intensitet")
 
@@ -698,24 +737,43 @@ pirateplot(formula = Correct ~ Condition + DeviantLevel, data = PitchData, main 
   abline(a=0.3,0.3, b=0, lwd=2, lty="dashed") 
 
 #Timbre
-pirateplot(formula = Correct ~ Condition + DeviantLevel, data = TimbreData, main = "Pitch Results", xlab = "Intensity Deviant",ylab="Percentage correct", ylim= c(0,1), theme=2, pal="info", avg.line.o=0.8, bar.f.o = .2, bean.b.o = .7, point.o = 0.3, point.pch = 1, back.col = "white") +
+pirateplot(formula = Correct ~ Condition + DeviantLevel, data = TimbreData, main = "Timbre Results", xlab = "Intensity Deviant",ylab="Percentage correct", ylim= c(0,1), theme=2, pal="info", avg.line.o=0.8, bar.f.o = .2, bean.b.o = .7, point.o = 0.3, point.pch = 1, back.col = "white") +
   abline(a=0.3,0.3, b=0, lwd=2, lty="dashed") 
 
 #Rhythm
-pirateplot(formula = Correct ~ Condition + DeviantLevel, data = RhythmData, main = "Pitch Results", xlab = "Intensity Deviant",ylab="Percentage correct", ylim= c(0,1), theme=2, pal="info", avg.line.o=0.8, bar.f.o = .2, bean.b.o = .7, point.o = 0.3, point.pch = 1, back.col = "white") +
+pirateplot(formula = Correct ~ Condition + DeviantLevel, data = RhythmData, main = "Rhythm Results", xlab = "Intensity Deviant",ylab="Percentage correct", ylim= c(0,1), theme=2, pal="info", avg.line.o=0.8, bar.f.o = .2, bean.b.o = .7, point.o = 0.3, point.pch = 1, back.col = "white") +
   abline(a=0.3,0.3, b=0, lwd=2, lty="dashed") 
 
-model1 = glmer(Correct ~ Condition+(1|ID), data=AllCond, family=poisson)
+
+
+model1 = glmer(Correct ~ Condition+(1|ID), data=AllCond, family=binomial)
 summary(model1)
 
-
-
-model2 = glmer(Correct ~Condition+Deviant+DeviantLevel+(1|ID), data=AllCond, family=poisson)
+model2= glmer(Correct ~ ÅrUdenHørelse +(1+ÅrUdenHørelse|ID), data=AllData, family = binomial)
 summary(model2)
-print(model2, correlation=TRUE)
 
-model3 = glmer(Correct ~Condition*Deviant*DeviantLevel+(1|ID), data=AllCond, family=poisson)
+model3= glmer(Correct~ÅrUdenHørelse+Alder+(1|ID), data=AllData, family=binomial)
 summary(model3)
+
+model4=glmer(Correct~ÅrUdenHørelse*Alder+(1|ID), data=AllData, family=binomial)
+summary(model4)
+
+model5=glmer(Correct~Timer1+Timer2+Musikviden+(1|ID), data=AllData, family=binomial)
+summary(model5)
+
+model6=glmer(Lyttevaner~Timer1+Timer2+Musikviden+(1|ID), data=AllData, family=binomial)
+
+
+
+model7 = glmer(Correct ~Condition+Deviant+DeviantLevel+(1|ID), data=AllCond, family=binomial)
+summary(model7)
+
+
+
+ model8 = glmer(Correct ~Condition*Deviant*DeviantLevel+(1|ID), data=AllCond, family=binomial, control = glmerControl(optimizer = "nloptwrap", calc.derivs = FALSE))
+summary(model8)
+vcov(model8)
+
 
 mean(Q_NO$Alder) #=59.88889
 max(Q_NO$Alder) #=80

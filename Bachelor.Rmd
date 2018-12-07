@@ -693,6 +693,7 @@ library(lme4)
 library(yarrr)
 
 AllData$Correct=as.integer(AllData$Correct)
+CIData$Correct=as.integer(CIData$Correct)
 
 AllCond$Correct=as.integer(AllCond$Correct)
 AllCond$Condition=as.factor(AllCond$Condition)
@@ -708,7 +709,7 @@ sum(AllCond$Correct[AllCond$Condition=="Control_y"])
 
 
 
-PitchData <- subset(AllCond, Deviant=="Pitch")
+PitchData <- subset(AllData, Deviant=="Pitch")
 sum(PitchData$Correct[PitchData$Condition=="CI_re"])
 #185
 
@@ -721,10 +722,10 @@ sum(PitchData$Correct[PitchData$Condition=="Control_e"])
 sum(PitchData$Correct[PitchData$Condition=="Control_y"])
 #404
 
-RhythmData <- subset(AllCond, Deviant=="Rhythm")
+RhythmData <- subset(AllData, Deviant=="Rhythm")
 
-TimbreData <- subset(AllCond, Deviant=="Timbre")
-IntensityData <- subset(AllCond, Deviant=="Intensitet")
+TimbreData <- subset(AllData, Deviant=="Timbre")
+IntensityData <- subset(AllData, Deviant=="Intensitet")
 
 
 #Intensity
@@ -744,35 +745,124 @@ pirateplot(formula = Correct ~ Condition + DeviantLevel, data = TimbreData, main
 pirateplot(formula = Correct ~ Condition + DeviantLevel, data = RhythmData, main = "Rhythm Results", xlab = "Intensity Deviant",ylab="Percentage correct", ylim= c(0,1), theme=2, pal="info", avg.line.o=0.8, bar.f.o = .2, bean.b.o = .7, point.o = 0.3, point.pch = 1, back.col = "white") +
   abline(a=0.3,0.3, b=0, lwd=2, lty="dashed") 
 
+m1=glmer(Correct~Group*DeviantLevel+(1|ID), data=AllData, family=binomial)
+summary(m1)
+
+pirateplot(formula = Correct ~ Group + DeviantLevel, data = AllData, main = "Results", xlab = "group",ylab="Percentage correct", ylim= c(0,1), theme=2, pal="info", avg.line.o=0.8, bar.f.o = .2, bean.b.o = .7, point.o = 0.3, point.pch = 1, back.col = "white") +
+  abline(a=0.3,0.3, b=0, lwd=2, lty="dashed") 
+
+m2=glmer(Correct~Condition*DeviantLevel+(1|ID), data=CIData, family=binomial)
+summary(m2)
+
+pirateplot(formula = Correct ~ Condition + DeviantLevel, data = CIData, main = "Results", xlab = "group",ylab="Percentage correct", ylim= c(0,1), theme=2, pal="info", avg.line.o=0.8, bar.f.o = .2, bean.b.o = .7, point.o = 0.3, point.pch = 1, back.col = "white") +
+  abline(a=0.3,0.3, b=0, lwd=2, lty="dashed") 
+
+m3=glmer(Correct~Condition*DeviantLevel+Alder+(1|ID), data=CIData, family=binomial)
+summary(m3)
+
+anova(m2,m3)
 
 
-model1 = glmer(Correct ~ Condition+(1|ID), data=AllCond, family=binomial)
-summary(model1)
-
-model2= glmer(Correct ~ ÅrUdenHørelse +(1+ÅrUdenHørelse|ID), data=AllData, family = binomial)
-summary(model2)
-
-model3= glmer(Correct~ÅrUdenHørelse+Alder+(1|ID), data=AllData, family=binomial)
-summary(model3)
-
-model4=glmer(Correct~ÅrUdenHørelse*Alder+(1|ID), data=AllData, family=binomial)
-summary(model4)
-
-model5=glmer(Correct~Timer1+Timer2+Musikviden+(1|ID), data=AllData, family=binomial)
-summary(model5)
-
-model6=glmer(Lyttevaner~Timer1+Timer2+Musikviden+(1|ID), data=AllData, family=binomial)
+m4=glmer(Correct~Condition*DeviantLevel+Alder+ÅrUdenHørelse+(1|ID), data=CIData, family=binomial)
+summary(m4)
 
 
+M5=glmer(Correct~Condition*DeviantLevel+Alder+ÅrUdenHørelse+Musikviden+(1|ID), data=CIData, family=binomial)
+summary(M5)
 
-model7 = glmer(Correct ~Condition+Deviant+DeviantLevel+(1|ID), data=AllCond, family=binomial)
-summary(model7)
+anova(m2,m3,m4,M5)
+
+
+PitchCI <- subset(CIData, Deviant=="Pitch")
+
+
+m5=glmer(Correct~Condition*DeviantLevel+(1|ID), data=PitchCI, family=binomial)
+summary(m5)
+
+
+m6=glmer(Correct~Condition*DeviantLevel+Alder+(1|ID), data=PitchCI, family=binomial)
+summary(m6)
+
+
+m7=glmer(Correct~Condition*DeviantLevel+Alder+Musikviden+(1|ID), data=PitchCI, family=binomial)
+summary(m7)
+
+anova(m5,m6,m7)
+
+RhythmCI <- subset(CIData, Deviant=="Rhythm")
+
+m8=glmer(Correct~Condition*DeviantLevel+(1|ID), data=RhythmCI, family=binomial, control = glmerControl(optimizer = "nloptwrap", calc.derivs = FALSE))
+summary(m8)
+
+
+m9=glmer(Correct~Condition*DeviantLevel+Alder+(1|ID), data=RhythmCI, family=binomial, control = glmerControl(optimizer = "nloptwrap", calc.derivs = FALSE))
+summary(m9)
+
+
+m10=glmer(Correct~Condition*DeviantLevel+Alder+Musikviden+(1|ID), data=RhythmCI, family=binomial, control = glmerControl(optimizer = "nloptwrap", calc.derivs = FALSE))
+summary(m10)
+
+anova(m8,m9,m10)
+
+TimbreCI <- subset(CIData, Deviant=="Timbre")
+
+m11=glmer(Correct~Condition*DeviantLevel+(1|ID), data=TimbreCI, family=binomial)
+summary(m11)
+
+
+m12=glmer(Correct~Condition*DeviantLevel+Alder+(1|ID), data=TimbreCI, family=binomial)
+summary(m12)
+
+
+m13=glmer(Correct~Condition*DeviantLevel+Alder+Musikviden+(1|ID), data=TimbreCI, family=binomial)
+summary(m13)
+
+anova(m11,m12,m13)
+
+IntensityCI <- subset(CIData, Deviant=="Intensitet")
+
+m14=glmer(Correct~Condition*DeviantLevel+(1|ID), data=IntensityCI, family=binomial)
+summary(m14)
+
+
+m15=glmer(Correct~Condition*DeviantLevel+Alder+(1|ID), data=IntensityCI, family=binomial)
+summary(m15)
+
+
+m16=glmer(Correct~Condition*DeviantLevel+Alder+Musikviden+(1|ID), data=IntensityCI, family=binomial, control = glmerControl(optimizer = "nloptwrap", calc.derivs = FALSE))
+summary(m16)
+
+anova(m14,m15,m16)
 
 
 
- model8 = glmer(Correct ~Condition*Deviant*DeviantLevel+(1|ID), data=AllCond, family=binomial, control = glmerControl(optimizer = "nloptwrap", calc.derivs = FALSE))
-summary(model8)
-vcov(model8)
+# model1 = glmer(Correct ~ Condition+(1|ID), data=AllCond, family=binomial)
+# summary(model1)
+# 
+# model2= glmer(Correct ~ ÅrUdenHørelse +(1+ÅrUdenHørelse|ID), data=AllData, family = binomial)
+# summary(model2)
+# 
+# model3= glmer(Correct~ÅrUdenHørelse+Alder+(1|ID), data=AllData, family=binomial)
+# summary(model3)
+# 
+# model4=glmer(Correct~ÅrUdenHørelse*Alder+(1|ID), data=AllData, family=binomial)
+# summary(model4)
+# 
+# model5=glmer(Correct~Timer1+Timer2+Musikviden+(1|ID), data=AllData, family=binomial)
+# summary(model5)
+# 
+# model6=glmer(Lyttevaner~Timer1+Timer2+Musikviden+(1|ID), data=AllData, family=binomial)
+# 
+# 
+# 
+# model7 = glmer(Correct ~Condition+Deviant+DeviantLevel+(1|ID), data=AllCond, family=binomial)
+# summary(model7)
+# 
+# 
+# 
+#  model8 = glmer(Correct ~Condition*Deviant*DeviantLevel+(1|ID), data=AllCond, family=binomial, control = glmerControl(optimizer = "nloptwrap", calc.derivs = FALSE))
+# summary(model8)
+# vcov(model8)
 
 
 mean(Q_NO$Alder) #=59.88889

@@ -36,6 +36,7 @@ AllData$Condition=gsub("Control_e", "CON1", AllData$Condition)
 
 CIData$Condition=gsub("CI_ex", "CI2", CIData$Condition)
 CIData$Condition=gsub("CI_re", "CI1", CIData$Condition)
+CIData=plyr::rename(CIData, c("Musikviden"="KnowledgeMusic"))
 
 PitchData <- subset(AllData, Deviant=="Pitch")
 RhythmData <- subset(AllData, Deviant=="Rhythm")
@@ -47,8 +48,7 @@ TimbreCI <- subset(CIData, Deviant=="Timbre")
 IntensityCI <- subset(CIData, Deviant=="Intensitet")
 
 
-
-CIData$Musikviden=ordered(CIData$Musikviden, levels = c("1", "2", "3", "4","5"))
+CIData$KnowledgeMusic=ordered(CIData$KnowledgeMusic, levels = c("1", "2", "3", "4","5"))
 
 CIData$Lyttevaner=ordered(CIData$Lyttevaner, levels = c("0-2 timer", "3-5 timer", "6-8 timer", "9 eller flere"))
 
@@ -88,14 +88,14 @@ m3=glmer(Correct~Condition*AlderOP+AarUdenHoerelse+(1|ID), data=CIData, family=b
 summary(m3)
 
 
-m4=glmer(Correct~Condition*AlderOP+AarUdenHoerelse+Musikviden+(1|ID), data=CIData, family=binomial, control = glmerControl(optimizer = "nloptwrap", calc.derivs = FALSE))
+m4=glmer(Correct~Condition*AlderOP+AarUdenHoerelse+KnowledgeMusic+(1|ID), data=CIData, family=binomial, control = glmerControl(optimizer = "nloptwrap", calc.derivs = FALSE))
 summary(m4)
 
 
-M5=glmer(Correct~Condition*AlderOP+AarUdenHoerelse+Musikviden+DeviantLevel+(1|ID), data=CIData, family=binomial, control = glmerControl(optimizer = "nloptwrap", calc.derivs = FALSE))
+M5=glmer(Correct~Condition*AlderOP+AarUdenHoerelse+KnowledgeMusic+DeviantLevel+(1|ID), data=CIData, family=binomial, control = glmerControl(optimizer = "nloptwrap", calc.derivs = FALSE))
 summary(M5)
 
-M6=glmer(Correct~Condition*AlderOP+AarUdenHoerelse+Musikviden+Condition*Deviant*DeviantLevel+Lyttevaner+(1|ID), data=CIData, family=binomial, control = glmerControl(optimizer = "nloptwrap", calc.derivs = FALSE))
+M6=glmer(Correct~Condition*AlderOP+AarUdenHoerelse+KnowledgeMusic+Condition*Deviant*DeviantLevel+Lyttevaner+(1|ID), data=CIData, family=binomial, control = glmerControl(optimizer = "nloptwrap", calc.derivs = FALSE))
 summary(M6)
 vcov(M6)
 
@@ -110,14 +110,19 @@ r.squaredGLMM(M6)
 #R2m=0.445869 , R2c=0.4530933
 
 
-#Plot for musikviden
-pirateplot(formula = Correct ~ Musikviden + DeviantLevel, data = CIData, main = "Results", xlab = "group",ylab="Percentage correct", ylim= c(0,1), theme=2, pal="info", avg.line.o=0.8, bar.f.o = .2, bean.b.o = .7, point.o = 0.33, point.pch = 1, back.col = "white") +
+#Plot for KnowledgeMusic
+pirateplot(formula = Correct ~ KnowledgeMusic + DeviantLevel, data = CIData, main = "Knowledge of Music and Performance", xlab = "group",ylab="Percentage correct", ylim= c(0,1), theme=2, pal="ipod", avg.line.o=0.8, bar.f.o = .2, bean.b.o = .7, point.o = 0.33, point.pch = 1, back.col = "white") +
   abline(a=0.3333, b=0, lwd=2, lty="dashed")
 
 #Plot for alder for operationen og lyttevaner
 ggplot(CIData, aes(AlderOP, Correct, color=Condition))+geom_smooth(method=lm)+labs(x="AgeOperation", title="Age when Implanted and Performance")
 
 ggplot(CIData, aes(as.numeric(Lyttevaner), Correct, color=Condition))+geom_smooth(method=lm)+labs(x="ListeningHabits", title="Listening Habits and Performance")
+
+ggplot(CIData, aes(as.numeric(KnowledgeMusic), Correct, color=Condition))+geom_smooth(method=lm)+labs(x="Knowledge og Music", title="Knowledge of Music and Performance")
+
+pirateplot(formula = Correct ~ Lyttevaner + DeviantLevel, data = CIData, main = "Knowledge of Music and Performance", xlab = "group",ylab="Percentage correct", ylim= c(0,1), theme=2, pal="ipod", avg.line.o=0.8, bar.f.o = .2, bean.b.o = .7, point.o = 0.33, point.pch = 1, back.col = "white") +
+  abline(a=0.3333, b=0, lwd=2, lty="dashed")
 
 
 #Plots for CI-brugere på tværs af devianter

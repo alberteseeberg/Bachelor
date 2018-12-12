@@ -510,18 +510,18 @@ Q_NO=read.csv2("Spørgeskema_NO.csv", header=TRUE, sep=";", na.strings=c(""))
 
 #Renaming--------
 
-Q_NO=plyr::rename(Q_NO, c("Dato.for.første.operation"="DatoOp1", "Dato.for.evt..anden.operation"="DatoOp2", "Hvor.gammel.var.du.da.de.høretab.opstod"="AlderHøretab", "Hvor.gammel.var.du.da.dit.høretab.blev.så.alvorligt.at.du.ikke.længere.havde.gavn.af.dit.høreapparat" = "AlderUdenGavnHøreapparat", "Kan.du.tale.i.telefon"="TaleTelefon", "Uddyb.1"="TaleTelefonUD.", "Havde.du.tinnitus.inden.din.CI.operation"="TinnitusPre", "Har.du.tinnitus.nu"="TinnitusPost", "Uddyb.2"="TinnitusUD.", "Bruger.du.høreapparat"="Høreapparat", "Uddyb.3"="HøreapparatUD.", "Før..Jeg.valgte.ofte.at.lytte.til.musik..f.eks..bevidst.at.høre.radio.i.bilen.eller.hjemme..gå.til.koncerter..se.musikprogrammer.i.fjernsynet..osv.."="LyttevanerPre", "Efter..Jeg.vælger.at.lytte.til.musik..f.eks..bevidst.at.høre.radio.i.bilen.eller.hjemme..gå.til.koncerter..se.musikprogrammer.i.fjernsynet..osv.."="Lyttevaner"  ))
+Q_NO=plyr::rename(Q_NO, c("Dato.for.første.operation"="DatoOp1", "Dato.for.evt..anden.operation"="DatoOp2", "Hvor.gammel.var.du.da.de.høretab.opstod"="AlderHoeretab", "Hvor.gammel.var.du.da.dit.høretab.blev.så.alvorligt.at.du.ikke.længere.havde.gavn.af.dit.høreapparat" = "AlderUdenGavnHoereapparat", "Kan.du.tale.i.telefon"="TaleTelefon", "Uddyb.1"="TaleTelefonUD.", "Havde.du.tinnitus.inden.din.CI.operation"="TinnitusPre", "Har.du.tinnitus.nu"="TinnitusPost", "Uddyb.2"="TinnitusUD.", "Bruger.du.høreapparat"="Hoereapparat", "Uddyb.3"="HoereapparatUD.", "Før..Jeg.valgte.ofte.at.lytte.til.musik..f.eks..bevidst.at.høre.radio.i.bilen.eller.hjemme..gå.til.koncerter..se.musikprogrammer.i.fjernsynet..osv.."="LyttevanerPre", "Efter..Jeg.vælger.at.lytte.til.musik..f.eks..bevidst.at.høre.radio.i.bilen.eller.hjemme..gå.til.koncerter..se.musikprogrammer.i.fjernsynet..osv.."="Lyttevaner"  ))
 
 #------
 
-Q_NO$DatoOp1[1]=Q_NO$DatoOp1[1]=""
+Q_NO$DatoOp1[1]=Q_NO$DatoOp1[1]="16/1-2017"
 Q_NO$DatoOp1[2]=Q_NO$DatoOp1[2]=""
-Q_NO$DatoOp1[3]=Q_NO$DatoOp1[3]=""
+Q_NO$DatoOp1[3]=Q_NO$DatoOp1[3]="13/3-2017"
 Q_NO$DatoOp1[4]=Q_NO$DatoOp1[4]=""
 Q_NO$DatoOp1[5]=Q_NO$DatoOp1[5]=""
 Q_NO$DatoOp1[6]=Q_NO$DatoOp1[6]=""
-Q_NO$DatoOp1[7]=Q_NO$DatoOp1[7]=""
-Q_NO$DatoOp1[8]=Q_NO$DatoOp1[8]=""
+Q_NO$DatoOp1[7]=Q_NO$DatoOp1[7]="29/9-2017"
+Q_NO$DatoOp1[8]=Q_NO$DatoOp1[8]="27/10-2017"
 Q_NO$DatoOp1[9]=Q_NO$DatoOp1[9]=""
 
 Q_NO$Køn[6]=Q_NO$Køn[6]="Mand"
@@ -529,14 +529,14 @@ Q_NO$Køn[6]=Q_NO$Køn[6]="Mand"
 Q_NO$Køn[Q_NO$Køn =="mand"] = "Mand"
 
 #Cleaaaaan------
-Q_NO$AlderHøretab=as.character(Q_NO$AlderHøretab)
-Q_NO$AlderUdenGavnHøreapparat=as.character(Q_NO$AlderUdenGavnHøreapparat)
-Q_NO$AlderUdenGavnHøreapparat[Q_NO$AlderUdenGavnHøreapparat=="2009"] = "71"
-Q_NO$AlderHøretab[Q_NO$AlderHøretab=="i 50'erne"] = "50"
-Q_NO$AlderHøretab[Q_NO$AlderHøretab=="Ca.8 år"] = "8"
-Q_NO$AlderHøretab[Q_NO$AlderHøretab=="Født med det"] = "0"
-Q_NO$AlderHøretab=as.integer(Q_NO$AlderHøretab)
-Q_NO$AlderUdenGavnHøreapparat=as.integer(Q_NO$AlderUdenGavnHøreapparat)
+Q_NO$AlderHoeretab=as.character(Q_NO$AlderHoeretab)
+Q_NO$AlderUdenGavnHoereapparat=as.character(Q_NO$AlderUdenGavnHoereapparat)
+Q_NO$AlderUdenGavnHoereapparat[Q_NO$AlderUdenGavnHoereapparat=="2009"] = "71"
+Q_NO$AlderHoeretab[Q_NO$AlderHoeretab=="i 50'erne"] = "50"
+Q_NO$AlderHoeretab[Q_NO$AlderHoeretab=="Ca.8 år"] = "8"
+Q_NO$AlderHoeretab[Q_NO$AlderHoeretab=="Født med det"] = "0"
+Q_NO$AlderHoeretab=as.integer(Q_NO$AlderHoeretab)
+Q_NO$AlderUdenGavnHoereapparat=as.integer(Q_NO$AlderUdenGavnHoereapparat)
 
 
 #------
@@ -547,27 +547,27 @@ Q_NO$LyttevanerPre=ordered(Q_NO$LyttevanerPre, levels = c("0-2 timer", "3-5 time
 Q_NO$Lyttevaner=ordered(Q_NO$Lyttevaner, levels = c("0-2 timer", "3-5 timer", "6-8 timer", "9 eller flere"))
 
 ID=c("1","2","3","4","5","6","7","8","9","10")
-ÅrUdenHørelse=c("8","3","0","2","16","0","0","1","9","1")
+AarUdenHoerelse=c("8","3","0","2","16","0","0","1","9","1")
 Musikviden=c("3","2","3","4","2","2","2","5","5","2")
 AlderOP=Q_NO$Alder
-NO_døvedata=data.frame(ID,ÅrUdenHørelse,AlderOP, Musikviden)
+NO_doevedata=data.frame(ID,AarUdenHoerelse,AlderOP, Musikviden)
 
 
-Q_NO=merge(Q_NO, NO_døvedata,by="ID")
+Q_NO=merge(Q_NO, NO_doevedata,by="ID")
 
 #removing stuff--------
 
 Q_NO=within(Q_NO, rm(Uddyb))
 Q_NO=within(Q_NO, rm(TaleTelefonUD.))
 Q_NO=within(Q_NO, rm(TinnitusUD.))
-Q_NO=within(Q_NO, rm(HøreapparatUD.))
+Q_NO=within(Q_NO, rm(HoereapparatUD.))
 
 #-----
 
 Q_NO$Musikviden=ordered(Q_NO$Musikviden, levels = c("1", "2", "3", "4", "5"))
 
 Q_NO$AlderOP=as.integer(Q_NO$AlderOP)
-Q_NO$ÅrUdenHørelse=as.integer(Q_NO$ÅrUdenHørelse)
+Q_NO$AarUdenHoerelse=as.integer(Q_NO$AarUdenHoerelse)
 
 write.csv(Q_NO, file="Q_NO")
 
@@ -576,7 +576,7 @@ write.csv(Q_NO, file="Q_NO")
 Q_ER=read.csv2("Spørgeskema_EO.csv", header=TRUE, sep=";")
 #names(Q_ER)
 #Renaming------
-Q_ER=plyr::rename(Q_ER, c("Dato.for.første.operation"="DatoOp1", "Dato.for.evt..anden.operation"="DatoOp2", "Hvor.gammel.var.du.da.de.høretab.opstod"="AlderHøretab", "Hvor.gammel.var.du.da.dit.høretab.blev.så.alvorligt.at.du.ikke.længere.havde.gavn.af.dit.høreapparat" = "AlderUdenGavnHøreapparat", "Kan.du.tale.i.telefon"="TaleTelefon", "Uddyb.1"="TaleTelefonUD.", "Havde.du.tinnitus.inden.din.CI.operation"="TinnitusPre", "Har.du.tinnitus.nu"="TinnitusPost", "Uddyb.2"="TinnitusUD.", "Bruger.du.høreapparat"="Høreapparat", "Uddyb.3"="HøreapparatUD.",  "Jeg.vælger.at.lytte.til.musik..f.eks..bevidst.at.høre.radio.i.bilen.eller.hjemme..gå.til.koncerter..se.musikprogrammer.i.fjernsynet..osv.."="Lyttevaner"  ))
+Q_ER=plyr::rename(Q_ER, c("Dato.for.første.operation"="DatoOp1", "Dato.for.evt..anden.operation"="DatoOp2", "Hvor.gammel.var.du.da.de.høretab.opstod"="AlderHoeretab", "Hvor.gammel.var.du.da.dit.høretab.blev.så.alvorligt.at.du.ikke.længere.havde.gavn.af.dit.høreapparat" = "AlderUdenGavnHoereapparat", "Kan.du.tale.i.telefon"="TaleTelefon", "Uddyb.1"="TaleTelefonUD.", "Havde.du.tinnitus.inden.din.CI.operation"="TinnitusPre", "Har.du.tinnitus.nu"="TinnitusPost", "Uddyb.2"="TinnitusUD.", "Bruger.du.høreapparat"="Hoereapparat", "Uddyb.3"="HøreapparatUD.",  "Jeg.vælger.at.lytte.til.musik..f.eks..bevidst.at.høre.radio.i.bilen.eller.hjemme..gå.til.koncerter..se.musikprogrammer.i.fjernsynet..osv.."="Lyttevaner"  ))
 #--------
 
 Q_ER$Køn=as.character(Q_ER$Køn)
@@ -585,9 +585,9 @@ Q_ER$Køn=as.factor(Q_ER$Køn)
 
 Q_ER$Lyttevaner=ordered(Q_ER$Lyttevaner, levels = c("0-2 timer", "3-5 timer", "6-8 timer", "9 eller flere"))
 
-Q_ER$AlderUdenGavnHøreapparat=as.character(Q_ER$AlderUdenGavnHøreapparat)
-Q_ER$AlderUdenGavnHøreapparat[Q_ER$AlderUdenGavnHøreapparat=="Havde gavn af det helt frem til CI operation"] = "56"
-Q_ER$AlderUdenGavnHøreapparat=as.integer(Q_ER$AlderUdenGavnHøreapparat)
+Q_ER$AlderUdenGavnHoereapparat=as.character(Q_ER$AlderUdenGavnHoereapparat)
+Q_ER$AlderUdenGavnHoereapparat[Q_ER$AlderUdenGavnHoereapparat=="Havde gavn af det helt frem til CI operation"] = "56"
+Q_ER$AlderUdenGavnHoereapparat=as.integer(Q_ER$AlderUdenGavnHoereapparat)
 
 #Removing stuff ------
 
@@ -600,18 +600,18 @@ Q_ER=within(Q_ER, rm(HøreapparatUD.))
 
 
 ID=c("201","202","203","204","205","206","207","208","209","210", "211")
-ÅrUdenHørelse=c("4","0","0","2","0","3","0","0","0","1","1")
+AarUdenHoerelse=c("4","0","0","2","0","3","0","0","0","1","1")
 AlderOP=c("62","39","47","47","56","50","42","59","73","36","25")
 Musikviden=c("2","4","4","2","5","2","2","2","4","4","2")
 
-ER_døvedata=data.frame(ID,ÅrUdenHørelse, AlderOP, Musikviden)
+ER_doevedata=data.frame(ID,AarUdenHoerelse, AlderOP, Musikviden)
 
-Q_ER=merge(Q_ER,ER_døvedata, by="ID")
+Q_ER=merge(Q_ER,ER_doevedata, by="ID")
 
 Q_ER$Musikviden=ordered(Q_ER$Musikviden, levels = c("1", "2", "3", "4", "5"))
 
 Q_ER$AlderOP=as.integer(Q_ER$AlderOP)
-Q_ER$ÅrUdenHørelse=as.integer(Q_ER$ÅrUdenHørelse)
+Q_ER$AarUdenHoerelse=as.integer(Q_ER$AarUdenHoerelse)
 
 write.csv(Q_ER, file="Q_ER")
 
@@ -698,6 +698,8 @@ CIData$Correct=as.integer(CIData$Correct)
 AllCond$Correct=as.integer(AllCond$Correct)
 AllCond$Condition=as.factor(AllCond$Condition)
 
+write.csv(CIData, file="CIData")
+
 sum(AllData$Correct[AllData$Condition=="CI_re"])
 #603
 sum(AllData$Correct[AllData$Condition=="CI_ex"])
@@ -748,91 +750,156 @@ pirateplot(formula = Correct ~ Condition + DeviantLevel, data = RhythmData, main
 m1=glmer(Correct~Group*DeviantLevel+(1|ID), data=AllData, family=binomial)
 summary(m1)
 
+
+
+
 pirateplot(formula = Correct ~ Group + DeviantLevel, data = AllData, main = "Results", xlab = "group",ylab="Percentage correct", ylim= c(0,1), theme=2, pal="info", avg.line.o=0.8, bar.f.o = .2, bean.b.o = .7, point.o = 0.3, point.pch = 1, back.col = "white") +
   abline(a=0.3,0.3, b=0, lwd=2, lty="dashed") 
 
-m2=glmer(Correct~Condition*DeviantLevel+(1|ID), data=CIData, family=binomial)
+m2=glmer(Correct~Condition*AlderOP+(1|ID), data=CIData, family=binomial)
 summary(m2)
 
 pirateplot(formula = Correct ~ Condition + DeviantLevel, data = CIData, main = "Results", xlab = "group",ylab="Percentage correct", ylim= c(0,1), theme=2, pal="info", avg.line.o=0.8, bar.f.o = .2, bean.b.o = .7, point.o = 0.3, point.pch = 1, back.col = "white") +
   abline(a=0.3,0.3, b=0, lwd=2, lty="dashed") 
 
-m3=glmer(Correct~Condition*DeviantLevel+Alder+(1|ID), data=CIData, family=binomial)
+m3=glmer(Correct~Condition*AlderOP+AarUdenHoerelse+(1|ID), data=CIData, family=binomial, control = glmerControl(optimizer = "nloptwrap", calc.derivs = FALSE))
 summary(m3)
 
 anova(m2,m3)
 
 
-m4=glmer(Correct~Condition*DeviantLevel+Alder+ÅrUdenHørelse+(1|ID), data=CIData, family=binomial)
+m4=glmer(Correct~Condition*AlderOP+AarUdenHoerelse+Musikviden+(1|ID), data=CIData, family=binomial, control = glmerControl(optimizer = "nloptwrap", calc.derivs = FALSE))
 summary(m4)
 
 
-M5=glmer(Correct~Condition*DeviantLevel+Alder+ÅrUdenHørelse+Musikviden+(1|ID), data=CIData, family=binomial)
+M5=glmer(Correct~Condition*AlderOP+AarUdenHoerelse+Musikviden+DeviantLevel+(1|ID), data=CIData, family=binomial, control = glmerControl(optimizer = "nloptwrap", calc.derivs = FALSE))
 summary(M5)
 
-anova(m2,m3,m4,M5)
+M6=glmer(Correct~Condition*AlderOP+AarUdenHoerelse+Musikviden+Condition*Deviant*DeviantLevel+Lyttevaner+(1|ID), data=CIData, family=binomial, control = glmerControl(optimizer = "nloptwrap", calc.derivs = FALSE))
+summary(M6)
+
+
+Nullmodel=glmer(Correct~1+(1|ID), data=CIData, family=binomial, control = glmerControl(optimizer = "nloptwrap", calc.derivs = FALSE))
+
+#sammenligning af bedste model med nulmodel
+anova(Nullmodel,M6)
+
+M7=glmer(Correct~Condition*AlderOP+Musikviden+DeviantLevel+(1|ID), data=CIData, family=binomial, control = glmerControl(optimizer = "nloptwrap", calc.derivs = FALSE))
+summary(M7)
+
+
+anova(m2,m3,m4,M5, M6)
+
+
+pirateplot(formula = Correct ~ Musikviden + DeviantLevel, data = CIData, main = "Results", xlab = "group",ylab="Percentage correct", ylim= c(0,1), theme=2, pal="info", avg.line.o=0.8, bar.f.o = .2, bean.b.o = .7, point.o = 0.33, point.pch = 1, back.col = "white") +
+  abline(a=0.3,0.3, b=0, lwd=2, lty="dashed")
+
+
+
+pirateplot(formula = Correct ~ AlderOP + DeviantLevel, data = CIData, main = "Results", xlab = "group",ylab="Percentage correct", ylim= c(0,1), theme=2, pal="info", avg.line.o=0.8, bar.f.o = .2, bean.b.o = .7, point.o = 0.3, point.pch = 1, back.col = "white") +
+  abline(a=0.3,0.3, b=0, lwd=2, lty="dashed")
+
+ggplot(CIData, aes(AlderOP, Correct, color=Condition))+geom_smooth(method=lm)
+
+ggplot(CIData, aes(as.numeric(Lyttevaner), Correct, color=Condition))+geom_smooth(method=lm)
+
+
+
+pirateplot(formula = Correct ~ Condition + Deviant + DeviantLevel, data = CIData, main = "Results", xlab = "group",ylab="Percentage correct", ylim= c(0,1), theme=2, pal="info", avg.line.o=0.8, bar.f.o = .2, bean.b.o = .7, point.o = 0.3, point.pch = 1, back.col = "white") +
+  abline(a=0.3,0.3, b=0, lwd=2, lty="dashed")
+
+
+library(apaTables)
+library(MuMIn)
+
+r.squaredGLMM(m2)
+r.squaredGLMM(m3)
+r.squaredGLMM(m4)
+r.squaredGLMM(M5)
+r.squaredGLMM(M6)
 
 
 PitchCI <- subset(CIData, Deviant=="Pitch")
 
 
-m5=glmer(Correct~Condition*DeviantLevel+(1|ID), data=PitchCI, family=binomial)
+m5=glmer(Correct~Condition+AlderOP+(1|ID), data=PitchCI, family=binomial)
 summary(m5)
 
 
-m6=glmer(Correct~Condition*DeviantLevel+Alder+(1|ID), data=PitchCI, family=binomial)
+m6=glmer(Correct~Condition+AlderOP+AarUdenHoerelse+(1|ID), data=PitchCI, family=binomial)
 summary(m6)
 
 
-m7=glmer(Correct~Condition*DeviantLevel+Alder+Musikviden+(1|ID), data=PitchCI, family=binomial)
+m7=glmer(Correct~Condition*AlderOP+ AarUdenHoerelse+ Musikviden+(1|ID), data=PitchCI, family=binomial, control = glmerControl(optimizer = "nloptwrap", calc.derivs = FALSE))
 summary(m7)
 
-anova(m5,m6,m7)
+m8=glmer(Correct~Condition+Musikviden+(1|ID), data=PitchCI, family=binomial)
+summary(M8)
+
+m9=glmer(Correct~Condition*AlderOP+ AarUdenHoerelse+ Musikviden+ DeviantLevel+(1|ID), data=PitchCI, family=binomial, control = glmerControl(optimizer = "nloptwrap", calc.derivs = FALSE))
+
+anova(m7,m8,m9)
 
 RhythmCI <- subset(CIData, Deviant=="Rhythm")
 
-m8=glmer(Correct~Condition*DeviantLevel+(1|ID), data=RhythmCI, family=binomial, control = glmerControl(optimizer = "nloptwrap", calc.derivs = FALSE))
-summary(m8)
-
-
-m9=glmer(Correct~Condition*DeviantLevel+Alder+(1|ID), data=RhythmCI, family=binomial, control = glmerControl(optimizer = "nloptwrap", calc.derivs = FALSE))
-summary(m9)
-
-
-m10=glmer(Correct~Condition*DeviantLevel+Alder+Musikviden+(1|ID), data=RhythmCI, family=binomial, control = glmerControl(optimizer = "nloptwrap", calc.derivs = FALSE))
+m10=glmer(Correct~Condition*DeviantLevel+(1|ID), data=RhythmCI, family=binomial,  control = glmerControl(optimizer = "nloptwrap", calc.derivs = FALSE))
 summary(m10)
 
-anova(m8,m9,m10)
+
+# m11=glmer(Correct~Condition+AlderOP+AarUdenHoerelse+(1|ID), data=RhythmCI, family=binomial)
+# summary(m6)
+# 
+# 
+# m12=glmer(Correct~Condition*AlderOP+ AarUdenHoerelse+ Musikviden+(1|ID), data=RhythmCI, family=binomial, control = glmerControl(optimizer = "nloptwrap", calc.derivs = FALSE))
+# summary(m7)
+# 
+# m13=glmer(Correct~Condition+Musikviden+(1|ID), data=RhythmCI, family=binomial)
+# summary(M8)
+# 
+# m14=glmer(Correct~Condition*AlderOP+ AarUdenHoerelse+ Musikviden+ DeviantLevel+(1|ID), data=RhythmCI, family=binomial, control = glmerControl(optimizer = "nloptwrap", calc.derivs = FALSE))
+
+anova(m10,m11,m12,m13,m14)
 
 TimbreCI <- subset(CIData, Deviant=="Timbre")
 
-m11=glmer(Correct~Condition*DeviantLevel+(1|ID), data=TimbreCI, family=binomial)
-summary(m11)
-
-
-m12=glmer(Correct~Condition*DeviantLevel+Alder+(1|ID), data=TimbreCI, family=binomial)
-summary(m12)
-
-
-m13=glmer(Correct~Condition*DeviantLevel+Alder+Musikviden+(1|ID), data=TimbreCI, family=binomial)
-summary(m13)
-
-anova(m11,m12,m13)
-
-IntensityCI <- subset(CIData, Deviant=="Intensitet")
-
-m14=glmer(Correct~Condition*DeviantLevel+(1|ID), data=IntensityCI, family=binomial)
-summary(m14)
-
-
-m15=glmer(Correct~Condition*DeviantLevel+Alder+(1|ID), data=IntensityCI, family=binomial)
+m15=glmer(Correct~Condition*DeviantLevel+(1|ID), data=TimbreCI, family=binomial)
 summary(m15)
 
 
-m16=glmer(Correct~Condition*DeviantLevel+Alder+Musikviden+(1|ID), data=IntensityCI, family=binomial, control = glmerControl(optimizer = "nloptwrap", calc.derivs = FALSE))
-summary(m16)
+# m16=glmer(Correct~Condition+AlderOP+AarUdenHoerelse+(1|ID), data=TimbreCI, family=binomial)
+# summary(m6)
+# 
+# 
+# m17=glmer(Correct~Condition*AlderOP+ AarUdenHoerelse+ Musikviden+(1|ID), data=TimbreCI, family=binomial, control = glmerControl(optimizer = "nloptwrap", calc.derivs = FALSE))
+# summary(m7)
+# 
+# m18=glmer(Correct~Condition+Musikviden+(1|ID), data=TimbreCI, family=binomial)
+# summary(M8)
+# 
+# m19=glmer(Correct~Condition*AlderOP+ AarUdenHoerelse+ Musikviden+ DeviantLevel+(1|ID), data=TimbreCI, family=binomial, control = glmerControl(optimizer = "nloptwrap", calc.derivs = FALSE))
 
-anova(m14,m15,m16)
+anova(m15,m16,m17,m18,m19)
+
+
+IntensityCI <- subset(CIData, Deviant=="Intensitet")
+
+m20=glmer(Correct~Condition+AlderOP+(1|ID), data=IntensityCI, family=binomial, control = glmerControl(optimizer = "nloptwrap", calc.derivs = FALSE))
+summary(m5)
+
+
+m21=glmer(Correct~Condition+AlderOP+AarUdenHoerelse+(1|ID), data=IntensityCI, family=binomial)
+summary(m6)
+
+
+m22=glmer(Correct~Condition*AlderOP+ AarUdenHoerelse+ Musikviden+(1|ID), data=IntensityCI, family=binomial, control = glmerControl(optimizer = "nloptwrap", calc.derivs = FALSE))
+summary(m7)
+
+m23=glmer(Correct~Condition+Musikviden+(1|ID), data=IntensityCI, family=binomial)
+summary(M8)
+
+m24=glmer(Correct~Condition*AlderOP+ AarUdenHoerelse+ Musikviden+ DeviantLevel+(1|ID), data=IntensityCI, family=binomial, control = glmerControl(optimizer = "nloptwrap", calc.derivs = FALSE))
+
+anova(m20,m21,m22,m23,m24)
 
 
 
@@ -888,5 +955,26 @@ sum(Q_KÆ$Køn=="Kvinde")#=7
 
 
 ```{r}
+
+
+#Intensity
+pirateplot(formula = Correct ~ Condition + DeviantLevel, data = IntensityCI, main = "Intensity Results", xlab = "Intensity Deviant",ylab="Correct", ylim= c(0,1), theme=2, pal="info", avg.line.o=0.8, bar.f.o = .2, bean.b.o = .7, point.o = 0.3, point.pch = 1, back.col = "white") +
+  abline(a=0.3,0.3, b=0, lwd=2, lty="dashed") 
+
+
+#Pitch
+pirateplot(formula = Correct ~ Condition + DeviantLevel, data = PitchCI, main = "Pitch Results", xlab = "Pitch Deviant",ylab="Percentage correct", ylim= c(0,1), theme=2, pal="info", avg.line.o=0.8, bar.f.o = .2, bean.b.o = .7, point.o = 0.3, point.pch = 1, back.col = "white") +
+  abline(a=0.3,0.3, b=0, lwd=2, lty="dashed") 
+
+#Timbre
+pirateplot(formula = Correct ~ Condition + DeviantLevel, data = TimbreCI, main = "Timbre Results", xlab = "Timbre Deviant",ylab="Percentage correct", ylim= c(0,1), theme=2, pal="info", avg.line.o=0.8, bar.f.o = .2, bean.b.o = .7, point.o = 0.3, point.pch = 1, back.col = "white") +
+  abline(a=0.3,0.3, b=0, lwd=2, lty="dashed") 
+
+#Rhythm
+pirateplot(formula = Correct ~ Condition + DeviantLevel, data = RhythmCI, main = "Rhythm Results", xlab = "Rhythm Deviant",ylab="Percentage correct", ylim= c(0,1), theme=2, pal="info", avg.line.o=0.8, bar.f.o = .2, bean.b.o = .7, point.o = 0.3, point.pch = 1, back.col = "white") +
+  abline(a=0.3,0.3, b=0, lwd=2, lty="dashed") 
+
+m30=glmer(Correct~Deviant+(1|ID), data=CIData, family=binomial)
+summary(m30)
 
 ```

@@ -1,0 +1,124 @@
+---
+title: "Bachelor 2"
+author: "Alberte Baggesgaard Seeberg"
+date: "12/12/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+setwd("~/Desktop/5. Semester/Bachelor/Data/Bachelor")
+
+library(stringr)
+library(plyr)
+library(dplyr)
+library(tidyverse)
+library(rethinking)
+library(ggplot2)
+library(lme4)
+library(yarrr)
+library(MuMIn)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+CIData=read.csv("CIData")
+AllData=read.csv("AltData")
+CIData=CIData[-1]
+AllData=AllData[-1]
+PitchData <- subset(AllData, Deviant=="Pitch")
+RhythmData <- subset(AllData, Deviant=="Rhythm")
+TimbreData <- subset(AllData, Deviant=="Timbre")
+IntensityData <- subset(AllData, Deviant=="Intensitet")
+PitchCI <- subset(CIData, Deviant=="Pitch")
+RhythmCI <- subset(CIData, Deviant=="Rhythm")
+TimbreCI <- subset(CIData, Deviant=="Timbre")
+IntensityCI <- subset(CIData, Deviant=="Intensitet")
+
+
+#Sammenlign Kontroller med CI brugere i forskellige 
+
+m1=glmer(Correct~Group*DeviantLevel+(1|ID), data=AllData, family=binomial)
+summary(m1)
+
+
+#Intensity
+pirateplot(formula = Correct ~ Condition + DeviantLevel, data = IntensityData, main = "Intensity Results", xlab = "Intensity Deviant",ylab="Correct", ylim= c(0,1), theme=2, pal="info", avg.line.o=0.8, bar.f.o = .2, bean.b.o = .7, point.o = 0.3, point.pch = 1, back.col = "white") +
+  abline(a=0.3333, b=0, lwd=2, lty="dashed") 
+
+
+#Pitch
+pirateplot(formula = Correct ~ Condition + DeviantLevel, data = PitchData, main = "Pitch Results", xlab = "Intensity Deviant",ylab="Percentage correct", ylim= c(0,1), theme=2, pal="info", avg.line.o=0.8, bar.f.o = .2, bean.b.o = .7, point.o = 0.3, point.pch = 1, back.col = "white") +
+  abline(a=0.3333, b=0, lwd=2, lty="dashed") 
+
+#Timbre
+pirateplot(formula = Correct ~ Condition + DeviantLevel, data = TimbreData, main = "Timbre Results", xlab = "Intensity Deviant",ylab="Percentage correct", ylim= c(0,1), theme=2, pal="info", avg.line.o=0.8, bar.f.o = .2, bean.b.o = .7, point.o = 0.3, point.pch = 1, back.col = "white") +
+  abline(a=0.3333, b=0, lwd=2, lty="dashed") 
+
+#Rhythm
+pirateplot(formula = Correct ~ Condition + DeviantLevel, data = RhythmData, main = "Rhythm Results", xlab = "Intensity Deviant",ylab="Percentage correct", ylim= c(0,1), theme=2, pal="info", avg.line.o=0.8, bar.f.o = .2, bean.b.o = .7, point.o = 0.3, point.pch = 1, back.col = "white") +
+  abline(a=0.3333, b=0, lwd=2, lty="dashed") 
+
+
+#Modeller for CIData
+
+m2=glmer(Correct~Condition*AlderOP+(1|ID), data=CIData, family=binomial)
+summary(m2)
+
+pirateplot(formula = Correct ~ Condition + DeviantLevel, data = CIData, main = "Results", xlab = "group",ylab="Percentage correct", ylim= c(0,1), theme=2, pal="info", avg.line.o=0.8, bar.f.o = .2, bean.b.o = .7, point.o = 0.3, point.pch = 1, back.col = "white") +
+  abline(a=0.3333, b=0, lwd=2, lty="dashed") 
+
+m3=glmer(Correct~Condition*AlderOP+AarUdenHoerelse+(1|ID), data=CIData, family=binomial, control = glmerControl(optimizer = "nloptwrap", calc.derivs = FALSE))
+summary(m3)
+
+
+m4=glmer(Correct~Condition*AlderOP+AarUdenHoerelse+Musikviden+(1|ID), data=CIData, family=binomial, control = glmerControl(optimizer = "nloptwrap", calc.derivs = FALSE))
+summary(m4)
+
+
+M5=glmer(Correct~Condition*AlderOP+AarUdenHoerelse+Musikviden+DeviantLevel+(1|ID), data=CIData, family=binomial, control = glmerControl(optimizer = "nloptwrap", calc.derivs = FALSE))
+summary(M5)
+
+M6=glmer(Correct~Condition*AlderOP+AarUdenHoerelse+Musikviden+Condition*Deviant*DeviantLevel+Lyttevaner+(1|ID), data=CIData, family=binomial, control = glmerControl(optimizer = "nloptwrap", calc.derivs = FALSE))
+summary(M6)
+vcov(M6)
+
+anova(m2,m3,m4,M5, M6)
+
+Nullmodel=glmer(Correct~1+(1|ID), data=CIData, family=binomial, control = glmerControl(optimizer = "nloptwrap", calc.derivs = FALSE))
+
+#sammenligning af bedste model med nulmodel
+anova(Nullmodel,M6)
+
+r.squaredGLMM(M6)
+
+
+#Plot for musikviden
+pirateplot(formula = Correct ~ Musikviden + DeviantLevel, data = CIData, main = "Results", xlab = "group",ylab="Percentage correct", ylim= c(0,1), theme=2, pal="info", avg.line.o=0.8, bar.f.o = .2, bean.b.o = .7, point.o = 0.33, point.pch = 1, back.col = "white") +
+  abline(a=0.3333, b=0, lwd=2, lty="dashed")
+
+#Plot for alder for operationen og lyttevaner
+ggplot(CIData, aes(AlderOP, Correct, color=Condition))+geom_smooth(method=lm)
+
+ggplot(CIData, aes(as.numeric(Lyttevaner), Correct, color=Condition))+geom_smooth(method=lm)
+
+
+#Plots for CI-brugere på tværs af devianter
+#Intensity
+pirateplot(formula = Correct ~ Condition + DeviantLevel, data = IntensityCI, main = "Intensity Results", xlab = "Intensity Deviant",ylab="Correct", ylim= c(0,1), theme=2, pal="info", avg.line.o=0.8, bar.f.o = .2, bean.b.o = .7, point.o = 0.3, point.pch = 1, back.col = "white") +
+  abline(a=0.3333, b=0, lwd=2, lty="dashed") 
+
+
+#Pitch
+pirateplot(formula = Correct ~ Condition + DeviantLevel, data = PitchCI, main = "Pitch Results", xlab = "Pitch Deviant",ylab="Percentage correct", ylim= c(0,1), theme=2, pal="info", avg.line.o=0.8, bar.f.o = .2, bean.b.o = .7, point.o = 0.3, point.pch = 1, back.col = "white") +
+  abline(a=0.3333, b=0, lwd=2, lty="dashed") 
+
+#Timbre
+pirateplot(formula = Correct ~ Condition + DeviantLevel, data = TimbreCI, main = "Timbre Results", xlab = "Timbre Deviant",ylab="Percentage correct", ylim= c(0,1), theme=2, pal="info", avg.line.o=0.8, bar.f.o = .2, bean.b.o = .7, point.o = 0.3, point.pch = 1, back.col = "white") +
+  abline(a=0.3333, b=0, lwd=2, lty="dashed") 
+
+#Rhythm
+pirateplot(formula = Correct ~ Condition + DeviantLevel, data = RhythmCI, main = "Rhythm Results", xlab = "Rhythm Deviant",ylab="Percentage correct", ylim= c(0,1), theme=2, pal="info", avg.line.o=0.8, bar.f.o = .2, bean.b.o = .7, point.o = 0.3, point.pch = 1, back.col = "white") +
+  abline(a=0.3333, b=0, lwd=2, lty="dashed") 
+```
+

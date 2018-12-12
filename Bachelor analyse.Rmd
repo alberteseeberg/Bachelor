@@ -26,6 +26,17 @@ CIData=read.csv("CIData")
 AllData=read.csv("AltData")
 CIData=CIData[-1]
 AllData=AllData[-1]
+
+AllData$Condition=as.character(AllData$Condition)
+
+AllData$Condition=gsub("CI_ex", "CI2", AllData$Condition)
+AllData$Condition=gsub("CI_re", "CI1", AllData$Condition)
+AllData$Condition=gsub("Control_y", "CON2", AllData$Condition)
+AllData$Condition=gsub("Control_e", "CON1", AllData$Condition)
+
+CIData$Condition=gsub("CI_ex", "CI2", CIData$Condition)
+CIData$Condition=gsub("CI_re", "CI1", CIData$Condition)
+
 PitchData <- subset(AllData, Deviant=="Pitch")
 RhythmData <- subset(AllData, Deviant=="Rhythm")
 TimbreData <- subset(AllData, Deviant=="Timbre")
@@ -36,9 +47,14 @@ TimbreCI <- subset(CIData, Deviant=="Timbre")
 IntensityCI <- subset(CIData, Deviant=="Intensitet")
 
 
+
+CIData$Musikviden=ordered(CIData$Musikviden, levels = c("1", "2", "3", "4","5"))
+
+CIData$Lyttevaner=ordered(CIData$Lyttevaner, levels = c("0-2 timer", "3-5 timer", "6-8 timer", "9 eller flere"))
+
 #Sammenlign Kontroller med CI brugere i forskellige 
 
-m1=glmer(Correct~Group*DeviantLevel+(1|ID), data=AllData, family=binomial)
+m1=glmer(Correct~Group+(1|ID), data=AllData, family=binomial)
 summary(m1)
 
 
@@ -48,21 +64,21 @@ pirateplot(formula = Correct ~ Condition + DeviantLevel, data = IntensityData, m
 
 
 #Pitch
-pirateplot(formula = Correct ~ Condition + DeviantLevel, data = PitchData, main = "Pitch Results", xlab = "Intensity Deviant",ylab="Percentage correct", ylim= c(0,1), theme=2, pal="info", avg.line.o=0.8, bar.f.o = .2, bean.b.o = .7, point.o = 0.3, point.pch = 1, back.col = "white") +
+pirateplot(formula = Correct ~ Condition + DeviantLevel, data = PitchData, main = "Pitch Results", xlab = "Pitch Deviant",ylab="Percentage correct", ylim= c(0,1), theme=2, pal="info", avg.line.o=0.8, bar.f.o = .2, bean.b.o = .7, point.o = 0.3, point.pch = 1, back.col = "white") +
   abline(a=0.3333, b=0, lwd=2, lty="dashed") 
 
 #Timbre
-pirateplot(formula = Correct ~ Condition + DeviantLevel, data = TimbreData, main = "Timbre Results", xlab = "Intensity Deviant",ylab="Percentage correct", ylim= c(0,1), theme=2, pal="info", avg.line.o=0.8, bar.f.o = .2, bean.b.o = .7, point.o = 0.3, point.pch = 1, back.col = "white") +
+pirateplot(formula = Correct ~ Condition + DeviantLevel, data = TimbreData, main = "Timbre Results", xlab = "Timbre Deviant",ylab="Percentage correct", ylim= c(0,1), theme=2, pal="info", avg.line.o=0.8, bar.f.o = .2, bean.b.o = .7, point.o = 0.3, point.pch = 1, back.col = "white") +
   abline(a=0.3333, b=0, lwd=2, lty="dashed") 
 
 #Rhythm
-pirateplot(formula = Correct ~ Condition + DeviantLevel, data = RhythmData, main = "Rhythm Results", xlab = "Intensity Deviant",ylab="Percentage correct", ylim= c(0,1), theme=2, pal="info", avg.line.o=0.8, bar.f.o = .2, bean.b.o = .7, point.o = 0.3, point.pch = 1, back.col = "white") +
+pirateplot(formula = Correct ~ Condition + DeviantLevel, data = RhythmData, main = "Rhythm Results", xlab = "Rhythm Deviant",ylab="Percentage correct", ylim= c(0,1), theme=2, pal="info", avg.line.o=0.8, bar.f.o = .2, bean.b.o = .7, point.o = 0.3, point.pch = 1, back.col = "white") +
   abline(a=0.3333, b=0, lwd=2, lty="dashed") 
 
 
 #Modeller for CIData
 
-m2=glmer(Correct~Condition*AlderOP+(1|ID), data=CIData, family=binomial)
+m2=glmer(Correct~Condition*AlderOP+(1|ID), data=CIData, family=binomial, control = glmerControl(optimizer = "nloptwrap", calc.derivs = FALSE))
 summary(m2)
 
 pirateplot(formula = Correct ~ Condition + DeviantLevel, data = CIData, main = "Results", xlab = "group",ylab="Percentage correct", ylim= c(0,1), theme=2, pal="info", avg.line.o=0.8, bar.f.o = .2, bean.b.o = .7, point.o = 0.3, point.pch = 1, back.col = "white") +
@@ -91,6 +107,7 @@ Nullmodel=glmer(Correct~1+(1|ID), data=CIData, family=binomial, control = glmerC
 anova(Nullmodel,M6)
 
 r.squaredGLMM(M6)
+#R2m=0.445869 , R2c=0.4530933
 
 
 #Plot for musikviden
@@ -98,9 +115,9 @@ pirateplot(formula = Correct ~ Musikviden + DeviantLevel, data = CIData, main = 
   abline(a=0.3333, b=0, lwd=2, lty="dashed")
 
 #Plot for alder for operationen og lyttevaner
-ggplot(CIData, aes(AlderOP, Correct, color=Condition))+geom_smooth(method=lm)
+ggplot(CIData, aes(AlderOP, Correct, color=Condition))+geom_smooth(method=lm)+labs(x="AgeOperation", title="Age when Implanted and Performance")
 
-ggplot(CIData, aes(as.numeric(Lyttevaner), Correct, color=Condition))+geom_smooth(method=lm)
+ggplot(CIData, aes(as.numeric(Lyttevaner), Correct, color=Condition))+geom_smooth(method=lm)+labs(x="ListeningHabits", title="Listening Habits and Performance")
 
 
 #Plots for CI-brugere på tværs af devianter

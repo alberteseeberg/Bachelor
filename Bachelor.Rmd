@@ -695,10 +695,11 @@ library(yarrr)
 AllData$Correct=as.integer(AllData$Correct)
 CIData$Correct=as.integer(CIData$Correct)
 
-AllCond$Correct=as.integer(AllCond$Correct)
-AllCond$Condition=as.factor(AllCond$Condition)
 
 write.csv(CIData, file="CIData")
+
+CIData=within(CIData, rm(Navn))
+AllData=within(CIData, rm(Navn))
 
 sum(AllData$Correct[AllData$Condition=="CI_re"])
 #603
@@ -977,5 +978,7 @@ pirateplot(formula = Correct ~ Condition + DeviantLevel, data = RhythmCI, main =
 
 m30=glmer(Correct~Deviant+(1|ID), data=CIData, family=binomial)
 summary(m30)
+
+
 
 ```

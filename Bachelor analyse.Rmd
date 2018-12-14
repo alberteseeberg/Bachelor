@@ -36,7 +36,10 @@ AllData$Condition=gsub("Control_e", "CON1", AllData$Condition)
 
 CIData$Condition=gsub("CI_ex", "CI2", CIData$Condition)
 CIData$Condition=gsub("CI_re", "CI1", CIData$Condition)
-CIData=plyr::rename(CIData, c("Musikviden"="KnowledgeMusic"))
+# CIData=plyr::rename(CIData, c("Musikviden"="KnowledgeMusic"))
+
+RECI <- subset(CIData, Condition=="CI1")
+EXCI <- subset(CIData, Condition=="CI2")
 
 PitchData <- subset(AllData, Deviant=="Pitch")
 RhythmData <- subset(AllData, Deviant=="Rhythm")
@@ -54,12 +57,13 @@ CIData$Lyttevaner=ordered(CIData$Lyttevaner, levels = c("0-2 timer", "3-5 timer"
 
 #Sammenlign Kontroller med CI brugere i forskellige 
 
-m1=glmer(Correct~Group+(1|ID), data=AllData, family=binomial)
+m1=glmer(Correct~Group+(1|ID), data=AllData, family=binomial, control = glmerControl(optimizer = "nloptwrap", calc.derivs = FALSE))
 summary(m1)
 
+r.squaredGLMM(m1)
 
 #Intensity
-pirateplot(formula = Correct ~ Condition + DeviantLevel, data = IntensityData, main = "Intensity Results", xlab = "Intensity Deviant",ylab="Correct", ylim= c(0,1), theme=2, pal="info", avg.line.o=0.8, bar.f.o = .2, bean.b.o = .7, point.o = 0.3, point.pch = 1, back.col = "white") +
+pirateplot(formula = Correct ~ Condition + DeviantLevel, data = IntensityData, main = "Intensity Results", xlab = "Intensity Deviant",ylab="Percentage correct", ylim= c(0,1), theme=2, pal="info", avg.line.o=0.8, bar.f.o = .2, bean.b.o = .7, point.o = 0.3, point.pch = 1, back.col = "white") +
   abline(a=0.3333, b=0, lwd=2, lty="dashed") 
 
 
@@ -115,11 +119,15 @@ pirateplot(formula = Correct ~ KnowledgeMusic + DeviantLevel, data = CIData, mai
   abline(a=0.3333, b=0, lwd=2, lty="dashed")
 
 #Plot for alder for operationen og lyttevaner
-ggplot(CIData, aes(AlderOP, Correct, color=Condition))+geom_smooth(method=lm)+labs(x="AgeOperation", title="Age when Implanted and Performance")
+ggplot(CIData, aes(AlderOP, Correct, color=Condition))+geom_smooth(method=lm)+labs(x="AgeSurgery", y="PercentageCorrect", title="Age when Implanted and Performance")
 
-ggplot(CIData, aes(as.numeric(Lyttevaner), Correct, color=Condition))+geom_smooth(method=lm)+labs(x="ListeningHabits", title="Listening Habits and Performance")
+ggplot(CIData, aes(as.numeric(Lyttevaner), Correct, color=Condition))+geom_smooth(method=lm)+labs(x="ListeningHabits", y="PercentageCorrect", title="Listening Habits and Performance")
 
-ggplot(CIData, aes(as.numeric(KnowledgeMusic), Correct, color=Condition))+geom_smooth(method=lm)+labs(x="Knowledge og Music", title="Knowledge of Music and Performance")
+ggplot(CIData, aes(as.numeric(KnowledgeMusic), Correct, color=Condition))+geom_smooth(method=lm)+labs(x="Knowledge og Music", y="PercentageCorrect", title="Knowledge of Music and Performance")
+
+ggplot(RECI, aes(as.numeric(AarUdenHoerelse), Correct, color=Condition))+geom_smooth(method=lm)+labs(x="Years of Deafness", y="PercentageCorrect", title="Years of Deafness and Performance")
+
+ggplot(EXCI, aes(as.numeric(AarUdenHoerelse), Correct, color=Condition))+geom_smooth(method=lm)+labs(x="Years of Deafness", y="PercentageCorrect", title="Years of Deafness and Performance")
 
 pirateplot(formula = Correct ~ Lyttevaner + DeviantLevel, data = CIData, main = "Knowledge of Music and Performance", xlab = "group",ylab="Percentage correct", ylim= c(0,1), theme=2, pal="ipod", avg.line.o=0.8, bar.f.o = .2, bean.b.o = .7, point.o = 0.33, point.pch = 1, back.col = "white") +
   abline(a=0.3333, b=0, lwd=2, lty="dashed")
